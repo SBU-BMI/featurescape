@@ -12,15 +12,26 @@ fscape.UI=function(){
     $('<div id="loadDataDiv"></div>').appendTo(div)
     $('<h4>Load Data</h4>').appendTo(loadDataDiv)
     $('<div>URL: <input id="inputURL" style="width:50%"></div>').appendTo(loadDataDiv)
-    $('<div><button>Local File</button></div>').appendTo(loadDataDiv)
+    $('<div><input type="file" id="localFile" value="Local File"></div>').appendTo(loadDataDiv)
     $('<div id="dropBox-select"></div>').appendTo(loadDataDiv)
     $('<div id="loadingDropbox" style="color:red"> loading DropBox.com ... </div>').appendTo(loadDataDiv)
     $('<div id="box-select" data-link-type="direct" data-multiselect="YOUR_MULTISELECT" data-client-id="cowmrbwt1f8v3c9n2ucsc951wmhxasrb"></div>').appendTo(loadDataDiv)
     $('<div id="loadingBox" style="color:red"> loading Box.com ... </div>').appendTo(loadDataDiv)
+    $('<div id="loadingDrive" style="color:red"> loading Google Drive ... </div>').appendTo(loadDataDiv)
+    
     // check for data URL
     if(location.search.length>1){
         inputURL.value=location.search.slice(1)
         fscape.loadURL()
+    }
+    // load file
+    localFile.onchange=function(){
+        var f = this.files[0]
+        var reader = new FileReader()
+        reader.onload=function(x){
+            fscape.loadFile(x.target.result)
+        }
+        reader.readAsText(f)
     }
     // load Box.com
     $.getScript("https://app.box.com/js/static/select.js").then(function(){
@@ -63,20 +74,36 @@ fscape.UI=function(){
         multiselect: false,
         //extensions: ['.json', '.txt', '.csv'],
     };
-    
-    
 
+    // load Google Drive
 
-
-
-
+    $.getScript('https://apis.google.com/js/api.js?onload=onApiLoad').then(function(){
+        console.log('gapi loaded')
+    })
 }
 
-fscape.loadURL=function(){
+fscape.loadURL=function(x){
     console.log('loading data from URL ...')
+    fscape.fun(x)
 }
-fscape.loadBox=function(){
+fscape.loadBox=function(x){
     console.log('loading data from Box.com ...')
+    $.get(x[0].url).then(function(x){
+        fscape.fun(x)
+    })
+    
+}
+fscape.loadDropbox=function(x){
+    console.log('loading data from Dropbox.com ...')
+    fscape.fun(x)
+}
+fscape.loadFile=function(x){
+    console.log('loading data from localFile ...')
+    fscape.fun(x)
+}
+
+fscape.fun=function(x){
+    console.log(x)
 }
 
 
