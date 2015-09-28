@@ -17,7 +17,7 @@ fscape.UI=function(){
     $('<div id="loadingDropbox" style="color:red"> loading DropBox.com ... </div>').appendTo(loadDataDiv)
     $('<div id="box-select" data-link-type="direct" data-multiselect="YOUR_MULTISELECT" data-client-id="cowmrbwt1f8v3c9n2ucsc951wmhxasrb"></div>').appendTo(loadDataDiv)
     $('<div id="loadingBox" style="color:red"> loading Box.com ... </div>').appendTo(loadDataDiv)
-    $('<div id="loadingDrive" style="color:red"> loading Google Drive ... </div>').appendTo(loadDataDiv)
+    $('<div id="loadingDrive" style="color:navy;font-size:x-small"> we could also be using GoogleDrive, Microsoft OneDrive, Amazon S3, ... </div>').appendTo(loadDataDiv)
     
     // check for data URL
     if(location.search.length>1){
@@ -29,7 +29,7 @@ fscape.UI=function(){
         var f = this.files[0]
         var reader = new FileReader()
         reader.onload=function(x){
-            fscape.loadFile(x.target.result)
+            fscape.loadFile(x.target.result,f.name)
         }
         reader.readAsText(f)
     }
@@ -67,7 +67,9 @@ fscape.UI=function(){
 
     options = {
         success: function(files) {
-            console.log("Files", files)
+            //console.log("Files", files)
+            var url=files[0].link
+            fscape.loadDropbox(url)
         },
         cancel: function() {},
         linkType: "direct",
@@ -82,28 +84,38 @@ fscape.UI=function(){
     })
 }
 
-fscape.loadURL=function(x){
-    console.log('loading data from URL ...')
-    fscape.fun(x)
-}
 fscape.loadBox=function(x){
     console.log('loading data from Box.com ...')
-    $.get(x[0].url).then(function(x){
-        fscape.fun(x)
+    var url=x[0].url
+    $.getJSON(url).then(function(x){
+        fscape.fun(x,url)
+        //fscape.fun(x,url)
     })
     
 }
-fscape.loadDropbox=function(x){
+fscape.loadDropbox=function(url){
     console.log('loading data from Dropbox.com ...')
-    fscape.fun(x)
+    fscape.loadURL(url)
 }
-fscape.loadFile=function(x){
+fscape.loadFile=function(x,fname){
     console.log('loading data from localFile ...')
-    fscape.fun(x)
+    fscape.fun(JSON.parse(x),fname)
 }
 
-fscape.fun=function(x){
-    console.log(x)
+fscape.loadURL=function(url){
+    // get URL from input
+    if(!url){
+        url = inputURL.value
+    }
+    $.getJSON(url).then(function(x){
+        fscape.fun(x,url)
+    })
+        
+
+}
+
+fscape.fun=function(x,url){
+    console.log('retrieved array with '+x.length+' entries from '+url)
 }
 
 
@@ -111,3 +123,13 @@ fscape.fun=function(x){
 
 // ini
 fscape()
+
+
+// Reference
+//
+// generating reference csv file (no worries, all connection info obfuscated :-P)
+// mongoexport --host xxxxxx --port xxxx --username xxxx --password xxxx  --collection Nuclei --type=csv --db=stony-brook --fields Slide,X,Y,Area,Perimeter,Eccentricity,Circularity,MajorAxisLength,MinorAxisLength,Extent,Solidity,FSD1,FSD2,FSD3,FSD4,FSD5,FSD6,HematoxlyinMeanIntensity,HematoxlyinMeanMedianDifferenceIntensity,HematoxlyinMaxIntensity,HematoxlyinMinIntensity,HematoxlyinStdIntensity,HematoxlyinEntropy,HematoxlyinEnergy,HematoxlyinSkewness,HematoxlyinKurtosis,HematoxlyinMeanGradMag,HematoxlyinStdGradMag,HematoxlyinEntropyGradMag,HematoxlyinEnergyGradMag,HematoxlyinSkewnessGradMag,HematoxlyinKurtosisGradMag,HematoxlyinSumCanny,HematoxlyinMeanCanny,CytoplasmMeanIntensity,CytoplasmMeanMedianDifferenceIntensity,CytoplasmMaxIntensity,CytoplasmMinIntensity,CytoplasmStdIntensity,CytoplasmEntropy,CytoplasmEnergy,CytoplasmSkewness,CytoplasmKurtosis,CytoplasmMeanGradMag,CytoplasmStdGradMag,CytoplasmEntropyGradMag,CytoplasmEnergyGradMag,CytoplasmSkewnessGradMag,CytoplasmKurtosisGradMag,CytoplasmSumCanny,CytoplasmMeanCanny,Boundaries,filename --limit 100000 --out nuclei100k.csv
+//
+// 1K reference dataset: https://opendata.socrata.com/resource/3dx7-jw2n.json
+// 10K reference dataset: https://opendata.socrata.com/resource/ytu3-b8rp.json
+// 100K reference dataset: https://opendata.socrata.com/resource/pbup-cums.js
