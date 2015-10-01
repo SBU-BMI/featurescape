@@ -40,7 +40,7 @@ http.createServer(function(request, response) {
       setTimeout(function(){ // count down to quiting
         response.end('{error: "this is taking too long, please email jonas.almeida@stonybrook.edu to find out what is the holdup :-("}')
       },25000)
-      MongoClient.connect(mongoUrl, function(err, db) {
+      MongoClient.connect(parms.mongoUrl, function(err, db) {
         console.log('connected ... retrieving documents ...')
         db.collection('objects').find(parms.find,{},{limit:parms.limit}).toArray(function(err,docs){
           console.log(new Date,docs.length+' docs')
