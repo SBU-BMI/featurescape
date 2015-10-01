@@ -22,6 +22,7 @@ http.createServer(function(request, response) {
     if(!parms.limit){parms.limit=max}
     if(parms.limit>max){parms.limit=max}
     if(!parms.mongoUrl){parms.mongoUrl='mongodb://<uname>:<passwd>@<domain>:<port>/<db>'} // <-- default mongo
+    if(!parms.collection){parms.collection='<collection name>'} // <-- default collection
     if(!parms.find){ // find
       parms.find={}
     }else{
@@ -42,7 +43,7 @@ http.createServer(function(request, response) {
       },25000)
       MongoClient.connect(parms.mongoUrl, function(err, db) {
         console.log('connected ... retrieving documents ...')
-        db.collection('objects').find(parms.find,{},{limit:parms.limit}).toArray(function(err,docs){
+        db.collection(parms.collection).find(parms.find,{},{limit:parms.limit}).toArray(function(err,docs){
           console.log(new Date,docs.length+' docs')
           db.close();
           response.end(JSON.stringify(docs));
