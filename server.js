@@ -5,7 +5,6 @@ var http = require("http");
 var url = require("url");
 var port=3000
 
-var mongoUrl='mongodb://<domain>:<port>/<db>'
 http.createServer(function(request, response) {
   if(request.url!='/favicon.ico'){
     var more = url.parse(request.url)
@@ -22,6 +21,7 @@ http.createServer(function(request, response) {
     var max=10 // maximim number of records at a time
     if(!parms.limit){parms.limit=max}
     if(parms.limit>max){parms.limit=max}
+    if(!parms.mongoUrl){parms.mongoUrl='mongodb://<uname>:<passwd>@<domain>:<port>/<db>'} // <-- default mongo
     if(!parms.find){ // find
       parms.find={}
     }else{
@@ -38,7 +38,7 @@ http.createServer(function(request, response) {
     if(!parms.err){
       console.log('conecting ...')
       setTimeout(function(){ // count down to quiting
-        response.end('{error: "this is taking too long, pls email jonas.almeida@stonybrook.edu to find out what is the holdup :-("}')
+        response.end('{error: "this is taking too long, please email jonas.almeida@stonybrook.edu to find out what is the holdup :-("}')
       },25000)
       MongoClient.connect(mongoUrl, function(err, db) {
         console.log('connected ... retrieving documents ...')
@@ -57,3 +57,4 @@ http.createServer(function(request, response) {
   }
 }).listen(port);
 console.log('listening on port '+port)
+
