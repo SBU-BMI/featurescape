@@ -1,17 +1,32 @@
 console.log('featurescape.js loaded')
 
-fscape=function(){
-    // ini
-    fscape.UI()
+fscape=function(x){
+    // being used to ini UI
+    if((!x)&&(document.getElementById("featureScapeDiv"))){
+        fscape.UI()
+    }else if(x){ //creating an fscape grid instance
+        return new fscape.grid(x)
+    }else{
+        console.log('no fscape UI')
+    }
+    
 }
 
 fscape.UI=function(){
     console.log('assembling UI ...')
     var div = document.getElementById("featureScapeDiv")
+    fscape.div=div
     // load data
     $('<div id="loadDataDiv"></div>').appendTo(div)
+    $('<div id="showLoadDataDiv"><a id="showLoadDataDivClick" href="javascript:void(0)" onclick="$(loadDataDiv).show(400);$(showLoadDataDiv).hide()">+ Load Data</a></div>').appendTo(div) 
+    $(showLoadDataDiv).hide()
     $('<h4>Load Data</h4>').appendTo(loadDataDiv)
     $('<div>URL: <input id="inputURL" style="width:50%"></div>').appendTo(loadDataDiv)
+    inputURL.onkeyup=function(evt){
+        if(evt.keyCode==13){
+            fscape.loadURL(inputURL.value)
+        }
+    }
     $('<div><input type="file" id="localFile" value="Local File"></div>').appendTo(loadDataDiv)
     $('<div id="dropBox-select"></div>').appendTo(loadDataDiv)
     $('<div id="loadingDropbox" style="color:red"> loading DropBox.com ... </div>').appendTo(loadDataDiv)
@@ -114,15 +129,35 @@ fscape.loadURL=function(url){
 
 }
 
+fscape.log=function(txt,color){
+    featureScapeLog.innerHTML=txt
+    if(!color){color='navy'}
+    featureScapeLog.style.color=color
+    console.log(txt)
+}
+
 fscape.fun=function(x,url){
-    console.log('retrieved array with '+x.length+' entries from '+url)
+    fscape.log(x.length+' entries loaded from '+url,'blue')
+    $(loadDataDiv).hide(400)
+    $(showLoadDataDiv).show()
+    // let's have some function
+    if(!document.getElementById('fscapeAnalysisDiv')){
+        $('<hr><div id="fscapeAnalysisDiv"><span style="color:red">processing, please wait ...</span></div>').appendTo(fscape.div)
+        fscapeAnalysisDiv.hidden=true
+        $(fscapeAnalysisDiv).show(1000)
+    }else{
+        fscapeAnalysisDiv.innerHTML='<span style="color:red">processing, please wait ...</span>'
+    }
 }
 
 
 
 
 // ini
-fscape()
+$(document).ready(function(){
+    fscape()
+})
+
 
 
 // Reference
