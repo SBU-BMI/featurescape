@@ -1,4 +1,5 @@
 console.log('featurescape.js loaded')
+// http://localhost:8000/featurescape/?https://fscape-132294.nitrousapp.com/?limit=1000;fun/u24demo.js
 
 fscape=function(x){
     // being used to ini UI
@@ -36,8 +37,22 @@ fscape.UI=function(){
     
     // check for data URL
     if(location.search.length>1){
-        inputURL.value=location.search.slice(1)
-        fscape.loadURL()
+        var ss =location.search.slice(1).split(';')
+        inputURL.value=ss[0]
+        if(ss[1]){
+            var sr=document.createElement('script')
+            sr.src=ss[1]
+            sr.onload=function(){
+                fscape.loadURL()
+            }
+            document.head.appendChild(sr)
+            //$.getScript(ss[1]).then(function(){
+            //    fscape.loadURL()
+            //})
+        }else{
+            fscape.loadURL()
+        }
+        
     }
     // load file
     localFile.onchange=function(){
@@ -122,11 +137,16 @@ fscape.loadURL=function(url){
     if(!url){
         url = inputURL.value
     }
-    $.getJSON(url).then(function(x){
-        fscape.fun(x,url)
-    })
-        
-
+    localforage.getItem(url)
+        .then(function(x){
+            fscape.fun(x,url)
+        })
+        .catch(function(){
+            $.getJSON(url).then(function(x){
+                fscape.fun(x,url)
+                localforage.setItem(url,x)
+            })
+        })
 }
 
 fscape.log=function(txt,color){
@@ -136,8 +156,7 @@ fscape.log=function(txt,color){
     console.log(txt)
 }
 
-fscape.fun=function(x,url){
-    fscape.log(x.length+' entries loaded from '+url,'blue')
+fscape.cleanUI=function(){ // and create fscapeAnalysisDiv
     $(loadDataDiv).hide(400)
     $(showLoadDataDiv).show()
     // let's have some function
@@ -150,7 +169,94 @@ fscape.fun=function(x,url){
     }
 }
 
+fscape.fun=function(x,url){
+    fscape.log(x.length+' entries loaded from '+url,'blue')
+    fscape.cleanUI()
+    fscape.plot(x) 
+}
 
+fscape.clust2html=function(cl){
+    var ind = cl[0]
+    var T = cl[1]
+    var cmap=jmat.colormap().map(function(ci){
+        return ci.map(function(cij){return Math.round(cij*255)})
+    })
+    var h ='<table>'
+    ind.forEach(function(i,j){
+        h+='<tr><td>'+fscape.dt.parmNum[i]+'</td>'
+        T.forEach(function(c){
+            var x = Math.pow(c[j],2) // E[0,1]
+            var v = Math.round((1-x)*50)
+            v=Math.min(v,50)
+            v=Math.max(v,0)
+            var cm = 'rgb('+cmap[v].toString()+')'
+            h+='<td style="color:'+cm+';font-size:'+(14-4*c[j])+'">O</td>'
+            //h+='<td style="color:rgb(255,">X</td>'
+        })
+        h+='</tr>'
+    })
+    h +='</table>'
+    return h
+}
+
+// do it
+
+fscape.plot=function(x){ // when ready to do it
+    fscapeAnalysisDiv.innerHTML='<table><tr><td id="featurecrossTD">featurecross</td><td id="featuremapTD">featuremap</td></tr><tr><td id="featuremoreTD">featuremore</td><td id="featurecompTD">featurecomp</td></tr></table><div id="featurecomputeDIV"></div>'
+    //fscapeAnalysisDiv
+    if(x){ // otherwise expect the data already packed in fscape.dt
+        fscape.dt={
+            docs:x
+        }
+        Object.getOwnPropertyNames(x[0]).forEach(function(p){
+    	   fscape.dt.tab[p]=x.map(function(xi){return xi[p]})
+        })
+    }
+
+    // featurecrossTD
+
+    // lsit parameters
+    var parmsAll = Object.getOwnPropertyNames(fscape.dt.tab)
+    // numeric paramters
+    var parmNum=Object.getOwnPropertyNames(fscape.dt.tab).filter(function(p){
+        return typeof(fscape.dt.docs[0][p])=="number"
+    })
+    // string parameters
+    var parmStr=Object.getOwnPropertyNames(fscape.dt.tab).filter(function(p){
+        return typeof(fscape.dt.docs[0][p])=="string"
+    })
+
+    // cluster numeric paramters
+
+    var xx = parmNum.map(function(p){
+        return fscape.dt.tab[p]
+    })
+
+    // make sure they're all numbers
+    ij2remove=[]
+    xx.forEach(function(xi,i){
+        xi.forEach(function(xij,j){
+            if(typeof(xij)!='number'){
+                console.log('non-numeric value at ('+i+','+j+'), '+xij+' - the whole row will be removed:')
+                ij2remove.push(j)
+            }
+        })
+    })
+    ij2remove=jmat.unique(ij2remove).sort().reverse()
+    ij2remove.forEach(function(i){
+        xx=xx.map(function(xi){
+            xi.splice(i,1)
+            return  xi // remove row i
+        })
+    })
+    
+    var cc = jmat.arrayfun(jmat.crosstab(xx),function(cij){
+        return 1-Math.abs(cij)
+    })
+    var cl = jmat.cluster(cc)  // remember this has three output arguments
+    fscape.dt.parmNum=parmNum
+    featurecrossTD.innerHTML=fscape.clust2html(cl)
+}
 
 
 // ini
@@ -167,4 +273,5 @@ $(document).ready(function(){
 //
 // 1K reference dataset: https://opendata.socrata.com/resource/3dx7-jw2n.json
 // 10K reference dataset: https://opendata.socrata.com/resource/ytu3-b8rp.json
-// 100K reference dataset: https://opendata.socrata.com/resource/pbup-cums.js
+// 100K reference dataset: https://opendata.socrata.com/resource/pbup-cums.json
+// Tahsin's mongodb: https://fscape-132294.nitrousapp.com/?limit=100
