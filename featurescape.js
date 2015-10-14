@@ -143,8 +143,10 @@ fscape.loadURL=function(url){
         })
         .catch(function(){
             $.getJSON(url).then(function(x){
-                fscape.fun(x,url)
-                localforage.setItem(url,x)
+                if(!fscape.dt){
+                    fscape.fun(x,url)
+                    localforage.setItem(url,x)
+                }            
             })
         })
 }
@@ -207,10 +209,13 @@ fscape.plot=function(x){ // when ready to do it
     //fscapeAnalysisDiv
     if(x){ // otherwise expect the data already packed in fscape.dt
         fscape.dt={
-            docs:x
+            docs:x,
+            tab:{}
         }
         Object.getOwnPropertyNames(x[0]).forEach(function(p){
-    	   fscape.dt.tab[p]=x.map(function(xi){return xi[p]})
+    	   fscape.dt.tab[p]=x.map(function(xi){
+    	       return xi[p]
+    	   })
         })
     }
 
@@ -238,7 +243,7 @@ fscape.plot=function(x){ // when ready to do it
     xx.forEach(function(xi,i){
         xi.forEach(function(xij,j){
             if(typeof(xij)!='number'){
-                console.log('non-numeric value at ('+i+','+j+'), '+xij+' - the whole row will be removed:')
+                console.log('non-numeric value at ('+i+','+j+'), '+xij)//+' - the whole row will be removed:',xi)
                 ij2remove.push(j)
             }
         })
@@ -253,6 +258,9 @@ fscape.plot=function(x){ // when ready to do it
     
     var cc = jmat.arrayfun(jmat.crosstab(xx),function(cij){
         return 1-Math.abs(cij)
+    })
+    cc.forEach(function(ci,i){
+        ci[i]=0 // diagonal by defenition
     })
     var cl = jmat.cluster(cc)  // remember this has three output arguments
     fscape.dt.parmNum=parmNum
