@@ -183,17 +183,17 @@ fscape.clust2html=function(cl){
     var cmap=jmat.colormap().map(function(ci){
         return ci.map(function(cij){return Math.round(cij*255)})
     })
-    var h ='<table>'
+    var h ='<table id="featurecrossTB">'
     ind.forEach(function(i,j){
         h+='<tr><td>'+fscape.dt.parmNum[i]+'</td>'
-        T.forEach(function(c){
+        T.forEach(function(c,k){
             var x = Math.pow(c[j],2) // E[0,1]
             if(isNaN(x)){x=1}
             var v = Math.round((1-x)*50)
             v=Math.min(v,50)
             v=Math.max(v,0)
             var cm = 'rgb('+cmap[v].toString()+')'
-            h+='<td style="color:'+cm+';font-size:'+(14-4*c[j])+'">O</td>'
+            h+='<td id="'+i+','+ind[k]+'" style="color:'+cm+';font-size:'+(14-4*c[j])+'">O</td>'
             //h+='<td style="color:rgb(255,">X</td>'
         })
         h+='</tr>'
@@ -265,6 +265,23 @@ fscape.plot=function(x){ // when ready to do it
     var cl = jmat.cluster(cc)  // remember this has three output arguments
     fscape.dt.parmNum=parmNum
     featurecrossTD.innerHTML=fscape.clust2html(cl)
+
+    // featuremapTD
+    featuremapTD.innerHTML='processing ...'
+    setTimeout(function(){
+        var tdfun=function(){
+            var ij=JSON.parse('['+this.id+']')
+            var i = ij[0], j = ij[1]
+            var fi=fscape.dt.parmNum[i]
+            var fj=fscape.dt.parmNum[j]
+            featuremapTD.innerHTML='zooming into <br><li style="color:blue">'+fi+'</li><li style="color:red">'+fj+'</li>'
+            4
+        }
+        $('td',featurecrossTB).click(tdfun)
+
+    },0)
+
+
 }
 
 
