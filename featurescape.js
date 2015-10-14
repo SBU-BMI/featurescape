@@ -186,6 +186,7 @@ fscape.clust2html=function(cl){
         h+='<tr><td>'+fscape.dt.parmNum[i]+'</td>'
         T.forEach(function(c){
             var x = Math.pow(c[j],2) // E[0,1]
+            if(isNaN(x)){x=1}
             var v = Math.round((1-x)*50)
             v=Math.min(v,50)
             v=Math.max(v,0)
