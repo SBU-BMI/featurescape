@@ -35,7 +35,7 @@ fscape.fun=function(x,url){
 		return xii
 	})
 	//lala=x
-    fscape.log(xx.length+' entries loaded from '+url,'blue')
+    fscape.log(xx.length+' entries sampled from '+url,'blue')
     fscape.cleanUI()
     // assemble table
     /*

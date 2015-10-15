@@ -172,7 +172,7 @@ fscape.cleanUI=function(){ // and create fscapeAnalysisDiv
 }
 
 fscape.fun=function(x,url){
-    fscape.log(x.length+' entries loaded from '+url,'blue')
+    fscape.log(x.length+' entries sampled from '+url,'blue')
     fscape.cleanUI()
     fscape.plot(x) 
 }
@@ -183,7 +183,7 @@ fscape.clust2html=function(cl){
     var cmap=jmat.colormap().map(function(ci){
         return ci.map(function(cij){return Math.round(cij*255)})
     })
-    var h ='<table id="featurecrossTB">'
+    var h ='<h4 style="color:maroon">Cross-tabulated feature correlations</h4><table id="featurecrossTB">'
     ind.forEach(function(i,j){
         h+='<tr><td>'+fscape.dt.parmNum[i]+'</td>'
         T.forEach(function(c,k){
@@ -205,7 +205,7 @@ fscape.clust2html=function(cl){
 // do it
 
 fscape.plot=function(x){ // when ready to do it
-    fscapeAnalysisDiv.innerHTML='<table><tr><td id="featurecrossTD">featurecross</td><td id="featuremapTD">featuremap</td></tr><tr><td id="featuremoreTD">featuremore</td><td id="featurecompTD">featurecomp</td></tr></table><div id="featurecomputeDIV"></div>'
+    fscapeAnalysisDiv.innerHTML='<table><tr><td id="featurecrossTD">featurecross</td><td id="featuremapTD">featuremap</td></tr><tr><td id="featuremoreTD" style="color:blue">(click on symbols for densities)</td><td id="featurecompTD">featurecomp</td></tr></table><div id="featurecomputeDIV"></div>'
     //fscapeAnalysisDiv
     if(x){ // otherwise expect the data already packed in fscape.dt
         fscape.dt={
@@ -263,6 +263,7 @@ fscape.plot=function(x){ // when ready to do it
         ci[i]=0 // diagonal by defenition
     })
     var cl = jmat.cluster(cc)  // remember this has three output arguments
+    fscape.dt.cl=cl // this may be better kept as a structure
     fscape.dt.parmNum=parmNum
     featurecrossTD.innerHTML=fscape.clust2html(cl)
 
@@ -271,14 +272,28 @@ fscape.plot=function(x){ // when ready to do it
     setTimeout(function(){
         var tdfun=function(){
             var ij=JSON.parse('['+this.id+']')
-            var i = ij[0], j = ij[1]
-            var fi=fscape.dt.parmNum[i]
-            var fj=fscape.dt.parmNum[j]
-            featuremapTD.innerHTML='zooming into <br><li style="color:blue">'+fi+'</li><li style="color:red">'+fj+'</li>'
-            4
+            if(ij.length>0){
+                var i = ij[0], j = ij[1]
+                var fi=fscape.dt.parmNum[i]
+                var fj=fscape.dt.parmNum[j]
+                featuremapTD.innerHTML='zooming into <br><li style="color:blue">'+fi+'</li><li style="color:red">'+fj+'</li>'
+            }
+        }
+        var tdover=function(){
+            var ij=JSON.parse('['+this.id+']')
+            if(ij.length>0){
+                var i = ij[0], j = ij[1]
+                var ind=fscape.dt.cl[0]
+                var ii=ind.indexOf(i), jj=ind.indexOf(j)
+                var fi=fscape.dt.parmNum[i]
+                var fj=fscape.dt.parmNum[j]
+                var cBack=JSON.parse('['+this.style.color.slice(4,-1).split(', ')+']').map(function(c){return 255-c}).toString()
+                //featuremoreTD.innerHTML='<hr><p style="background-color:'+this.style.color+';color:rgb('+cBack+')">Pearson correlation between <br>'+fi+' <br>'+fj+'<br> = '+Math.round((1-fscape.dt.cl[1][j][i])*100)/100+'</p>'
+                featuremoreTD.innerHTML='<hr><p style="background-color:'+this.style.color+';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p style="color:navy">Pearson correlation between <br>'+fi+' <br>'+fj+'<br> corr('+ii+','+jj+')= '+Math.round((1-fscape.dt.cl[1][ii][jj])*100)/100+'</p><p style="background-color:'+this.style.color+';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>'
+            }               
         }
         $('td',featurecrossTB).click(tdfun)
-
+        $('td',featurecrossTB).mouseover(tdover)
     },0)
 
 
