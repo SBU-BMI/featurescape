@@ -198,14 +198,14 @@ fscape.clust2html=function(cl){
         })
         h+='</tr>'
     })
-    h +='</table>'
+    h +='</table><p id="featuremoreTD" style="color:blue">(click on symbols for densities)</p>'
     return h
 }
 
 // do it
 
 fscape.plot=function(x){ // when ready to do it
-    fscapeAnalysisDiv.innerHTML='<table><tr><td id="featurecrossTD">featurecross</td><td id="featuremapTD">featuremap</td></tr><tr><td id="featuremoreTD" style="color:blue">(click on symbols for densities)</td><td id="featurecompTD">featurecomp</td></tr></table><div id="featurecomputeDIV"></div>'
+    fscapeAnalysisDiv.innerHTML='<table><tr><td id="featurecrossTD" style="vertical-align:top">featurecross</td><td id="featuremapTD" style="vertical-align:top">featuremap</td></tr><tr><td id="featureElseTD" style="vertical-align:top"></td><td id="featurecompTD" style="vertical-align:top">featurecomp</td></tr></table><div id="featurecomputeDIV"></div>'
     //fscapeAnalysisDiv
     if(x){ // otherwise expect the data already packed in fscape.dt
         fscape.dt={
@@ -276,7 +276,12 @@ fscape.plot=function(x){ // when ready to do it
                 var i = ij[0], j = ij[1]
                 var fi=fscape.dt.parmNum[i]
                 var fj=fscape.dt.parmNum[j]
-                featuremapTD.innerHTML='zooming into <br><li style="color:blue">'+fi+'</li><li style="color:red">'+fj+'</li>'
+                if($('#featuremapTD > table').length==0){
+                    featuremapTD.innerHTML='zooming into <br><li style="color:blue">'+fi+'</li><li style="color:blue">'+fj+'</li><span style="color:red">processing ...</red>'
+                }
+                setTimeout(function(){
+                    fscape.featuremap(i,j)
+                },0)
             }
         }
         var tdover=function(){
@@ -294,9 +299,83 @@ fscape.plot=function(x){ // when ready to do it
         }
         $('td',featurecrossTB).click(tdfun)
         $('td',featurecrossTB).mouseover(tdover)
+        //featuremapTD.innerHTML='<span style="color:blue">(click on symbols for densities)</span>'
+        featuremoreTD.innerHTML='<span style="color:blue"></span>'
+        featuremapTD.innerHTML='<span style="color:blue">(click on symbols for densities)</span>'
     },0)
+}
 
+// fscape.featuremap
 
+fscape.featuremap=function(i,j){
+    // cross filter from hereon
+    //cf = crossfilter(fscape.dt.docs)
+    var ind=fscape.dt.cl[0]
+    var ii=ind.indexOf(i), jj=ind.indexOf(j)
+    var fi=fscape.dt.parmNum[i]
+    var fj=fscape.dt.parmNum[j]
+    if(!fscape.dt.dtmemb){ // if the data was not normalized already
+        fscape.dt.dtmemb={} // distributions
+        fscape.dt.parmNum.forEach(function(p){
+            fscape.dt.dtmemb[p]=jmat.memb(fscape.dt.tab[p])
+        })
+    }
+    if(!fscape.dt.tabmemb){fscape.dt.tabmemb={}}
+    if(!fscape.dt.tabmemb[fi]){
+        fscape.dt.tabmemb[fi]=jmat.memb(fscape.dt.tab[fi],fscape.dt.dtmemb[fi])
+    }
+    if(!fscape.dt.tabmemb[fj]){
+        fscape.dt.tabmemb[fj]=jmat.memb(fscape.dt.tab[fj],fscape.dt.dtmemb[fj])
+    }
+    //
+    if($('#featuremapTD > table').length==0){ // assemblemap
+        fscape.dt.n=20  // for a n x n table
+        var h='<table>'
+        h+='<tr><td id="legendFj">fj</td><td></td></tr>'
+        h+='<tr><td id="featuremapTableTD"></td><td id="legendFi">fi</td></tr>'
+        h+='</table>'
+        featuremapTD.innerHTML=h
+        // featuremapTableTD
+        var hh='<table>'
+        var tii=jmat.range(0,fscape.dt.n-1)
+        var tjj=jmat.range(0,fscape.dt.n-1)
+        tii.forEach(function(ti){
+            hh+='<tr>'
+            tjj.forEach(function(tj){
+                hh+='<td id="fm_'+(fscape.dt.n-ti-1)+'_'+(tj)+'">&nbsp;&nbsp;&nbsp;</td>'
+            })
+            hh+='</tr>'
+        })
+        hh+='</table>'
+        featuremapTableTD.innerHTML=hh
+        legendFi.style.transform="rotate(-90deg)"
+        //legendFi.style.transformOrigin="center 100px"
+        //<table id="featuremapTable">'
+    }
+    // legends
+    legendFi.textContent=fi
+    legendFj.textContent=fj
+    // calculate densities
+    var M=jmat.zeros(fscape.dt.n,fscape.dt.n)
+    var N=fscape.dt.n-1/fscape.dt.tab[fi].length // to shave the ceiling
+    //var tii=jmat.range(0,fscape.dt.n-1)
+    //var tjj=jmat.range(0,fscape.dt.n-1)
+    var s = fscape.dt.n/(fscape.dt.tabmemb[fi].length) // step increase
+    jmat.transpose([fscape.dt.tabmemb[fi],fscape.dt.tabmemb[fj]]).forEach(function(xij){
+        M[Math.floor(xij[0]*N)][Math.floor(xij[1]*N)]+=s
+    })
+    var ij=jmat.range(0,fscape.dt.n-1)
+    ij.forEach(function(ti){
+        ij.forEach(function(tj){
+            var td=document.getElementById('fm_'+ti+'_'+tj)
+            var d = M[ti][tj] // density
+            td.textContent=Math.round(M[ti][tj]*100)
+        })
+    })
+
+                
+
+    4
 }
 
 
