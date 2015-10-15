@@ -13,6 +13,7 @@ fscape.fun=function(x,url){
 	x=x.map(function(xi){
 		return xi.features
 	})
+	/*
 	var atrs={} // get them all first
 	x.forEach(function(xi){
 		Object.getOwnPropertyNames(xi).forEach(function(p){
@@ -35,6 +36,8 @@ fscape.fun=function(x,url){
 		return xii
 	})
 	//lala=x
+	*/
+	var xx=x
     fscape.log(xx.length+' entries sampled from '+url,'blue')
     fscape.cleanUI()
     // assemble table

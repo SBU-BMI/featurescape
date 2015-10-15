@@ -329,7 +329,7 @@ fscape.featuremap=function(i,j){
     }
     //
     if($('#featuremapTD > table').length==0){ // assemblemap
-        fscape.dt.n=20  // for a n x n table
+        fscape.dt.n=20//fscape.dt.docs.length/100  // for a n x n table
         var h='<table>'
         h+='<tr><td id="legendFj">fj</td><td></td></tr>'
         h+='<tr><td id="featuremapTableTD"></td><td id="legendFi">fi</td></tr>'
@@ -364,12 +364,20 @@ fscape.featuremap=function(i,j){
     jmat.transpose([fscape.dt.tabmemb[fi],fscape.dt.tabmemb[fj]]).forEach(function(xij){
         M[Math.floor(xij[0]*N)][Math.floor(xij[1]*N)]+=s
     })
+    // prepare the colormap
+    var cmap=jmat.colormap().map(function(ci){
+        return ci.map(function(cij){return Math.round(cij*255)})
+    })
     var ij=jmat.range(0,fscape.dt.n-1)
     ij.forEach(function(ti){
         ij.forEach(function(tj){
             var td=document.getElementById('fm_'+ti+'_'+tj)
             var d = M[ti][tj] // density
-            td.textContent=Math.round(M[ti][tj]*100)
+            var v = Math.round(63*d)
+            v=Math.min(63,v)
+            var c = 'rgb('+cmap[v].toString()+')'
+            //td.textContent=Math.round(M[ti][tj]*100)
+            td.style.backgroundColor=c
         })
     })
 
