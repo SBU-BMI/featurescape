@@ -279,6 +279,17 @@ fscape.plot=function(x){ // when ready to do it
                 if($('#featuremapTD > table').length==0){
                     featuremapTD.innerHTML='zooming into <br><li style="color:blue">'+fi+'</li><li style="color:blue">'+fj+'</li><span style="color:red">processing ...</red>'
                 }
+                // place an X on selected td, after clearing it all to "O"
+                for(var tri=0;tri<this.parentElement.parentElement.children.length;tri++){
+                    for(var tdj=0;tdj<this.parentElement.parentElement.children[tri].children.length;tdj++){
+                        var txtC=this.parentElement.parentElement.children[tri].children[tdj]
+                        if(txtC.textContent.length==1){
+                            txtC.textContent='O'
+                        }
+                    }
+                }
+                
+                this.textContent="X"
                 setTimeout(function(){
                     fscape.featuremap(i,j)
                 },0)
@@ -336,7 +347,7 @@ fscape.featuremap=function(i,j){
         h+='</table>'
         featuremapTD.innerHTML=h
         // featuremapTableTD
-        var hh='<table>'
+        var hh='<table id="featureheatmapTable">'
         var tii=jmat.range(0,fscape.dt.n-1)
         var tjj=jmat.range(0,fscape.dt.n-1)
         tii.forEach(function(ti){
@@ -380,6 +391,13 @@ fscape.featuremap=function(i,j){
             td.style.backgroundColor=c
         })
     })
+
+    // mouse over anywhere in the map refocuses correlation info
+    featureheatmapTable.onmouseover=function(){
+        var cBack=JSON.parse('['+this.style.color.slice(4,-1).split(', ')+']').map(function(c){return 255-c}).toString()
+        featuremoreTD.innerHTML='<hr><p style="background-color:'+this.style.color+';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p style="color:navy">Pearson correlation between <li style="color:navy">'+fi+' </li><li style="color:navy">'+fj+'</li> corr('+ii+','+jj+')= '+Math.round((1-fscape.dt.cl[1][ii][jj])*1000)/1000+'</p><p style="background-color:'+this.style.color+';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>'
+    }
+
 
                 
 
