@@ -205,7 +205,7 @@ fscape.clust2html=function(cl){
 // do it
 
 fscape.plot=function(x){ // when ready to do it
-    fscapeAnalysisDiv.innerHTML='<table><tr><td id="featurecrossTD" style="vertical-align:top">featurecross</td><td id="featuremapTD" style="vertical-align:top">featuremap</td></tr><tr><td id="featureElseTD" style="vertical-align:top"></td><td id="featurecompTD" style="vertical-align:top">featurecomp</td></tr></table><div id="featurecomputeDIV"></div>'
+    fscapeAnalysisDiv.innerHTML='<table id="fscapeAnalysisTab"><tr><td id="featurecrossTD" style="vertical-align:top">featurecross</td><td id="featuremapTD" style="vertical-align:top">featuremap</td></tr><tr><td id="featureElseTD" style="vertical-align:top"></td><td id="featurecompTD" style="vertical-align:top"></td></tr></table><div id="featurecomputeDIV"></div>'
     //fscapeAnalysisDiv
     if(x){ // otherwise expect the data already packed in fscape.dt
         fscape.dt={
@@ -344,7 +344,7 @@ fscape.featuremap=function(i,j){
         var h='<table>'
         h+='<tr><td id="legendFj">fj</td><td></td></tr>'
         h+='<tr><td id="featuremapTableTD"></td><td id="legendFi">fi</td></tr>'
-        h+='</table>'
+        h+='</table><div id="featuremapMoreDiv"><div>'
         featuremapTD.innerHTML=h
         // featuremapTableTD
         var hh='<table id="featureheatmapTable">'
@@ -359,6 +359,20 @@ fscape.featuremap=function(i,j){
         })
         hh+='</table>'
         featuremapTableTD.innerHTML=hh
+        var mapTDover=function(){
+            featuremapMoreDiv.innerHTML=this.id
+            var qij = JSON.parse('['+this.id.slice(3).replace('_',',')+']').map(function(q){return q/fscape.dt.n})
+            var vi = jmat.interp1(fscape.dt.dtmemb[fi][1],fscape.dt.dtmemb[fi][0],[qij[0],qij[0]+1/fscape.dt.n])
+            var vj = jmat.interp1(fscape.dt.dtmemb[fj][1],fscape.dt.dtmemb[fj][0],[qij[1],qij[1]+1/fscape.dt.n])
+            var c = this.style.backgroundColor
+            var h = '<hr><p style="background-color:'+c+';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>' 
+            h += '<li>'+fi+' = ['+vi+']</li>' 
+            h += '<li>'+fj+' = ['+vj+']</li>'
+            h += '<p style="color:blue">distribution density: '+this.d+'</p>'
+            h += '<p style="background-color:'+c+';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>'
+            featuremapMoreDiv.innerHTML=h
+        }
+        $('#featureheatmapTable >>> td').mouseover(mapTDover)
         legendFi.style.transform="rotate(-90deg)"
         //legendFi.style.transformOrigin="center 100px"
         //<table id="featuremapTable">'
@@ -384,6 +398,7 @@ fscape.featuremap=function(i,j){
         ij.forEach(function(tj){
             var td=document.getElementById('fm_'+ti+'_'+tj)
             var d = M[ti][tj] // density
+            td.d=d
             var v = Math.round(63*d)
             v=Math.min(63,v)
             var c = 'rgb('+cmap[v].toString()+')'
@@ -394,8 +409,9 @@ fscape.featuremap=function(i,j){
 
     // mouse over anywhere in the map refocuses correlation info
     featureheatmapTable.onmouseover=function(){
+        var c = featurecrossTB.tBodies[0].children[ii].children[jj+1].style.color
         var cBack=JSON.parse('['+this.style.color.slice(4,-1).split(', ')+']').map(function(c){return 255-c}).toString()
-        featuremoreTD.innerHTML='<hr><p style="background-color:'+this.style.color+';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p style="color:navy">Pearson correlation between <li style="color:navy">'+fi+' </li><li style="color:navy">'+fj+'</li> corr('+ii+','+jj+')= '+Math.round((1-fscape.dt.cl[1][ii][jj])*1000)/1000+'</p><p style="background-color:'+this.style.color+';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>'
+        featuremoreTD.innerHTML='<hr><p style="background-color:'+c+';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p style="color:navy">Pearson correlation between <li style="color:navy">'+fi+' </li><li style="color:navy">'+fj+'</li> corr('+ii+','+jj+')= '+Math.round((1-fscape.dt.cl[1][ii][jj])*1000)/1000+'</p><p style="background-color:'+c+';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>'
     }
 
 
