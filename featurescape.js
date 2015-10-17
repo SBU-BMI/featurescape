@@ -305,7 +305,7 @@ fscape.plot=function(x){ // when ready to do it
                 var fj=fscape.dt.parmNum[j]
                 var cBack=JSON.parse('['+this.style.color.slice(4,-1).split(', ')+']').map(function(c){return 255-c}).toString()
                 //featuremoreTD.innerHTML='<hr><p style="background-color:'+this.style.color+';color:rgb('+cBack+')">Pearson correlation between <br>'+fi+' <br>'+fj+'<br> = '+Math.round((1-fscape.dt.cl[1][j][i])*100)/100+'</p>'
-                featuremoreTD.innerHTML='<hr><p style="background-color:'+this.style.color+';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p style="color:navy">Pearson correlation between <li style="color:navy">'+fi+' </li><li style="color:navy">'+fj+'</li> corr('+ii+','+jj+')= '+Math.round((1-fscape.dt.cl[1][ii][jj])*1000)/1000+'</p><p style="background-color:'+this.style.color+';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>'
+                featuremoreTD.innerHTML='<hr><p style="background-color:'+this.style.color+';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p style="color:navy">Pearson correlation between <li style="color:navy">'+fi+' </li><li style="color:navy">'+fj+'</li> |corr('+ii+','+jj+')|= '+jmat.toPrecision(1-fscape.dt.cl[1][ii][jj])+'</p><p style="background-color:'+this.style.color+';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>'
             }               
         }
         $('td',featurecrossTB).click(tdfun)
@@ -366,9 +366,11 @@ fscape.featuremap=function(i,j){
             var vj = jmat.interp1(fscape.dt.dtmemb[fj][1],fscape.dt.dtmemb[fj][0],[qij[1],qij[1]+1/fscape.dt.n])
             var c = this.style.backgroundColor
             var h = '<hr><p style="background-color:'+c+';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>' 
-            h += '<li>'+fi+' = ['+vi+']</li>' 
-            h += '<li>'+fj+' = ['+vj+']</li>'
-            h += '<p style="color:blue">distribution density: '+this.d+'</p>'
+            h += '<li>'+fi+' = ['+jmat.toPrecision(vi)+']</li>' 
+            h += 'Quantile = ['+jmat.toPrecision([qij[0],qij[0]+1/fscape.dt.n])+']'
+            h += '<li>'+fj+' = ['+jmat.toPrecision(vj)+']</li>'
+            h += 'Quantile = ['+jmat.toPrecision([qij[1],qij[1]+1/fscape.dt.n])+']'
+            h += '<p style="color:blue">distribution density: '+jmat.toPrecision(this.d)+'</p>'
             h += '<p style="background-color:'+c+';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>'
             featuremapMoreDiv.innerHTML=h
         }
