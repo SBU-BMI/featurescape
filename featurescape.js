@@ -273,7 +273,7 @@ fscape.plot=function(x){ // when ready to do it
         var tdfun=function(){
             var ij=JSON.parse('['+this.id+']')
             if(ij.length>0){
-                var i = ij[0], j = ij[1]
+                var i = ij[1], j = ij[0]
                 var fi=fscape.dt.parmNum[i]
                 var fj=fscape.dt.parmNum[j]
                 if($('#featuremapTD > table').length==0){
@@ -291,14 +291,14 @@ fscape.plot=function(x){ // when ready to do it
                 
                 this.textContent="X"
                 setTimeout(function(){
-                    fscape.featuremap(i,j)
+                    fscape.featuremap(i,j) // not a mistake, the axis need to be switched to fulfll right hand rule
                 },0)
             }
         }
         var tdover=function(){
             var ij=JSON.parse('['+this.id+']')
             if(ij.length>0){
-                var i = ij[0], j = ij[1]
+                var i = ij[1], j = ij[0]
                 var ind=fscape.dt.cl[0]
                 var ii=ind.indexOf(i), jj=ind.indexOf(j)
                 var fi=fscape.dt.parmNum[i]
@@ -366,10 +366,10 @@ fscape.featuremap=function(i,j){
             var vj = jmat.interp1(fscape.dt.dtmemb[fj][1],fscape.dt.dtmemb[fj][0],[qij[1],qij[1]+1/fscape.dt.n])
             var c = this.style.backgroundColor
             var h = '<hr><p style="background-color:'+c+';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>' 
-            h += '<li>'+fi+' = ['+jmat.toPrecision(vi)+']</li>' 
-            h += 'Quantile = ['+jmat.toPrecision([qij[0],qij[0]+1/fscape.dt.n])+']'
             h += '<li>'+fj+' = ['+jmat.toPrecision(vj)+']</li>'
             h += 'Quantile = ['+jmat.toPrecision([qij[1],qij[1]+1/fscape.dt.n])+']'
+            h += '<li>'+fi+' = ['+jmat.toPrecision(vi)+']</li>' 
+            h += 'Quantile = ['+jmat.toPrecision([qij[0],qij[0]+1/fscape.dt.n])+']'
             h += '<p style="color:blue">distribution density: '+jmat.toPrecision(this.d)+'</p>'
             h += '<p style="background-color:'+c+';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>'
             featuremapMoreDiv.innerHTML=h
