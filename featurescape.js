@@ -139,7 +139,17 @@ fscape.loadURL=function(url){
     }
     localforage.getItem(url)
         .then(function(x){
-            fscape.fun(x,url)
+            if(!x){
+                $.getJSON(url).then(function(x){
+                    if(!fscape.dt){
+                        fscape.fun(x,url)
+                        localforage.setItem(url,x)
+                    }            
+                })
+            }else{
+                fscape.fun(x,url)
+            }
+            
         })
         .catch(function(){
             $.getJSON(url).then(function(x){
