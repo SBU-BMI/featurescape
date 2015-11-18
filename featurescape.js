@@ -385,11 +385,12 @@ fscape.plot=function(x){ // when ready to do it
             fscape.dt.cl[1].forEach(function(dd,i){
                 dd.forEach(function(d,j){
                     ij++
-                    if((d<0.5)&(i<j)){
+                    var cut = 0.75
+                    if((d<cut)&(i<j)){
                         graph.links.push({
                             source:i,
                             target:j,
-                            value:0.5-d
+                            value:cut-d
                         })
                     }
                 })
