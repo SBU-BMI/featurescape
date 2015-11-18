@@ -184,7 +184,38 @@ fscape.cleanUI=function(){ // and create fscapeAnalysisDiv
 fscape.fun=function(x,url){
     fscape.log(x.length+' entries sampled from '+url,'blue')
     fscape.cleanUI()
-    fscape.plot(x) 
+    // make sure only numeric parameters go forward
+    var alwaysNum={}
+    Object.getOwnPropertyNames(x[0]).forEach(function(p){
+        if(typeof(parseFloat(x[0][p])=='number')){
+            alwaysNum[p]=true
+        }
+    })
+    var pp=Object.getOwnPropertyNames(alwaysNum)
+    pp.forEach(function(p){
+        x.forEach(function(xi,i){
+            if(alwaysNum[p]){
+                alwaysNum[p]=(!isNaN(parseFloat(xi[p])))
+            }
+        })
+    })
+    // remove non-numeric parameters
+    var ppn=[], ppnan=[]
+    pp.forEach(function(p){
+        if(alwaysNum[p]){ppn.push(p)}
+        else{ppnan.push(p)}
+    })
+    var y=[],z=[]
+    x.forEach(function(xi,i){
+        y[i]={};z[i]={}
+        ppn.forEach(function(p){
+            y[i][p]=parseFloat(xi[p])
+        })
+        ppnan.forEach(function(p){
+            z[i][p]=xi[p]
+        })
+    })
+    fscape.plot(y,z) 
 }
 
 fscape.clust2html=function(cl){
@@ -208,7 +239,7 @@ fscape.clust2html=function(cl){
         })
         h+='</tr>'
     })
-    h +='</table><p id="featuremoreTD" style="color:blue">(click on symbols for densities)</p>'
+    h +='</table><p id="featuremoreTD" style="color:blue">(click on symbols for densities)</p><div id="featureNet">Similar neighbor network</div>'
     return h
 }
 
@@ -323,6 +354,118 @@ fscape.plot=function(x){ // when ready to do it
         //featuremapTD.innerHTML='<span style="color:blue">(click on symbols for densities)</span>'
         featuremoreTD.innerHTML='<span style="color:blue"></span>'
         featuremapTD.innerHTML='<span style="color:blue">(click on symbols for densities)</span>'
+        setTimeout(function(){
+            //featureNet.innerHTML='featureNet :-)'
+            var width = 960, height = 500;
+            var color = d3.scale.category20();
+            var force = d3.layout.force()
+                .charge(-120)
+                .linkDistance(30)
+                .size([width, height]);
+            var svg = d3.select(featureNet).append("svg")
+                .attr("width", width)
+                .attr("height", height);
+            // assemble network JSON
+            var graph ={
+                nodes:[],
+                links:[]
+            }
+            // node
+            fscape.dt.parmNum.forEach(function(p){
+                graph.nodes.push({
+                    //name:p,
+                    group:1
+                })
+            })
+            
+            // links
+            graph.links=[]
+            // {"source":1,"target":0,"value":1},
+            var ij=0
+            fscape.dt.cl[1].forEach(function(dd,i){
+                dd.forEach(function(d,j){
+                    ij++
+                    if((d<0.5)&(i<j)){
+                        graph.links.push({
+                            source:i,
+                            target:j,
+                            value:0.5-d
+                        })
+                    }
+                })
+            })
+
+
+
+            force
+              .nodes(graph.nodes)
+              .links(graph.links)
+              .start();
+
+            var link = svg.selectAll(".link")
+              .data(graph.links)
+              .enter().append("line")
+              .attr("class", "link")
+              .style("stroke-width", function(d) { return 10*d.value; })
+            
+            var gnodes = svg.selectAll('g.gnode')
+              .data(graph.nodes)
+              .enter()
+              .append('g')
+              .classed('gnode', true);
+
+            // Add one circle in each group
+            var node = gnodes.append("circle")
+              .attr("class", "node")
+              .attr("r", function(d) { 
+                    //return d.r
+                    return 5
+                })
+              .style("fill", function(d) { 
+                    return color(d.group); 
+                })
+              .call(force.drag);
+              
+              // index labels
+                if(!fscape.dt.L){
+                    fscape.dt.L=[]
+                    fscape.dt.cl[0].forEach(function(ind,i){
+                        fscape.dt.L[i]=fscape.dt.parmNum[ind]
+                    })
+                }
+
+              // Append the labels to each group
+                var labels = gnodes.append("text")
+                  .attr("dx", ".55em")
+                  //.attr("dy", ".35em")
+                  .text(function(d) { 
+                    return fscape.dt.L[d.index]
+                  })
+                  
+
+              force.on("tick", function() {
+                // Update the links
+                link.attr("x1", function(d) { return d.source.x; })
+                  .attr("y1", function(d) { return d.source.y; })
+                  .attr("x2", function(d) { return d.target.x; })
+                  .attr("y2", function(d) { return d.target.y; });
+                // Translate the groups
+                gnodes.attr("transform", function(d) { 
+                  return 'translate(' + [d.x, d.y] + ')'; 
+                });
+                
+        });
+        
+        jQuery('.node').css('stroke','navy')
+        jQuery('.node').css('stroke-width','1.5px')
+        jQuery('.link').css('stroke','#999')
+        jQuery('.link').css('stroke','.6')
+
+
+            4
+            
+        },1000)
+        
     },0)
 }
 
