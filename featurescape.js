@@ -239,7 +239,7 @@ fscape.clust2html=function(cl){
         })
         h+='</tr>'
     })
-    h +='</table><p id="featuremoreTD" style="color:blue">(click on symbols for densities)</p><div id="featureNet">Similar neighbor network</div>'
+    h +='</table><p id="featuremoreTD" style="color:blue">(click on symbols for densities)</p>&nbsp;<div id="featureNetSlider"></div><div id="featureNet">Similar neighbor network</div>'
     return h
 }
 
@@ -336,7 +336,7 @@ fscape.plot=function(x){ // when ready to do it
                 },0)
             }
         }
-        var tdover=function(){
+        var tdover=function(cut){
             var ij=JSON.parse('['+this.id+']')
             if(ij.length>0){
                 var i = ij[1], j = ij[0]
@@ -356,12 +356,14 @@ fscape.plot=function(x){ // when ready to do it
         featuremapTD.innerHTML='<span style="color:blue">(click on symbols for densities)</span>'
         setTimeout(function(){
             //featureNet.innerHTML='featureNet :-)'
+            var doNet=function(cut){ 
             var width = 960, height = 500;
             var color = d3.scale.category20();
             var force = d3.layout.force()
                 .charge(-120)
                 .linkDistance(30)
                 .size([width, height]);
+            featureNet.innerHTML=''   
             var svg = d3.select(featureNet).append("svg")
                 .attr("width", width)
                 .attr("height", height);
@@ -385,7 +387,7 @@ fscape.plot=function(x){ // when ready to do it
             fscape.dt.cl[1].forEach(function(dd,i){
                 dd.forEach(function(d,j){
                     ij++
-                    var cut = 0.75
+                    //var cut = 0.75
                     if((d<cut)&(i<j)){
                         graph.links.push({
                             source:i,
@@ -407,7 +409,7 @@ fscape.plot=function(x){ // when ready to do it
               .data(graph.links)
               .enter().append("line")
               .attr("class", "link")
-              .style("stroke-width", function(d) { return 10*d.value; })
+              .style("stroke-width", function(d) { return 10*d.value/cut; })
             
             var gnodes = svg.selectAll('g.gnode')
               .data(graph.nodes)
@@ -461,6 +463,28 @@ fscape.plot=function(x){ // when ready to do it
         jQuery('.node').css('stroke-width','1.5px')
         jQuery('.link').css('stroke','#999')
         jQuery('.link').css('stroke','.6')
+        }
+        // threshold slider
+        
+        d3.select('#featureNetSlider').call(
+            d3.slider()
+                .scale(d3.scale.linear()
+                    .domain([0,1])
+                    
+                 )
+                .axis(
+                    d3.svg.axis()
+                        .orient("top")
+                        .ticks(8)
+                 )
+                .value(0.5)
+                .on("slide", function(evt, value){
+                    //console.log(value)
+                    doNet(1-value)
+                })
+
+        );
+        doNet(1-0.5)
 
 
             4
