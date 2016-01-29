@@ -18,7 +18,7 @@ u24p.buildUI=function(id){ // build User Interface
     u24p.cases.forEach(function(c){
         var li = document.createElement('li')
         ol.appendChild(li)
-        li.innerHTML='<a href="http://reserve4.informatics.stonybrook.edu/dev1/osdCamicroscope.php?tissueId='+c+'" target="_blank">'+c+'</a>, (<a href="http://www.cbioportal.org/case.do?cancer_study_id=luad_tcga&case_id='+c.slice(0,12)+'" target="_blank">cbio</a>) random seed:'
+        li.innerHTML='<a href="http://reserve4.informatics.stonybrook.edu/dev1/osdCamicroscope.php?tissueId='+c+'" target="_blank">'+c+'</a>, (<a href="http://www.cbioportal.org/case.do?cancer_study_id=luad_tcga&case_id='+c.slice(0,12)+'" target="_blank" style="color:red">cbio</a>) random seed:'
         var sp = document.createElement('span')
         li.appendChild(sp)
         //http://www.cbioportal.org/case.do?cancer_study_id=luad_tcga&case_id=TCGA-05-4395
@@ -54,7 +54,8 @@ u24p.buildUI=function(id){ // build User Interface
         btFeature.onclick=function(){
             var caseId=c
             // http://129.49.249.191:3000/?limit=10&find={%22randval%22:{%22$gte%22:0.9},%22image.caseid%22:%22TCGA-12-3653-01Z-00-DX1%22}
-            window.open('http://sbu-bmi.github.io/featurescape/?http://129.49.249.191:3000/?limit=10&find={%22randval%22:{%22$gte%22:0.9},%22image.caseid%22:%22TCGA-12-3653-01Z-00-DX1%22};lala.js')
+            var sz=$('input',spSize)[0].value
+            window.open('http://sbu-bmi.github.io/featurescape/?http://129.49.249.191:3000/?limit='+sz+'&find={%22randval%22:{%22$gte%22:'+sp.textContent+'},%22image.caseid%22:%22TCGA-12-3653-01Z-00-DX1%22};fun/u24demo.js')
             4
         }
     })
