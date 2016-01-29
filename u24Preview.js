@@ -31,6 +31,9 @@ u24p.buildUI=function(id){ // build User Interface
         li.appendChild(btFeature)
         btFeature.textContent="feature scape of sampled features"
         btFeature.style.color="blue"
+        var spMsg = document.createElement('span')
+        li.appendChild(spMsg)
+        btFeature.onmouseover=function(){}
         setInterval(function(){
             var v = 0.95*Math.random()
             sp.textContent=v.toString().slice(0,5)
