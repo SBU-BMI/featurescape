@@ -30,7 +30,7 @@ u24p.buildUI=function(id){ // build User Interface
         li.appendChild(spSize)
         var btFeature = document.createElement('button')
         li.appendChild(btFeature)
-        btFeature.textContent="feature scape of sampled features"
+        btFeature.textContent="featurescape of sampled features"
         btFeature.style.color="blue"
         var spMsg = document.createElement('span')
         spMsg.style.color='red'
