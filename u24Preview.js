@@ -18,9 +18,10 @@ u24p.buildUI=function(id){ // build User Interface
     u24p.cases.forEach(function(c){
         var li = document.createElement('li')
         ol.appendChild(li)
-        li.innerHTML='<a href="http://reserve4.informatics.stonybrook.edu/dev1/osdCamicroscope.php?tissueId='+c+'" target="_blank">'+c+'</a> random seed:'
+        li.innerHTML='<a href="http://reserve4.informatics.stonybrook.edu/dev1/osdCamicroscope.php?tissueId='+c+'" target="_blank">'+c+'</a>, (<a href="http://www.cbioportal.org/case.do?cancer_study_id=luad_tcga&case_id='+c.slice(0,12)+'" target="_blank">cbio</a>) random seed:'
         var sp = document.createElement('span')
         li.appendChild(sp)
+        //http://www.cbioportal.org/case.do?cancer_study_id=luad_tcga&case_id=TCGA-05-4395
         var v = 0.95*Math.random()
         sp.textContent=v.toString().slice(0,5)
         sp.style.fontWeight='bold'
@@ -32,13 +33,30 @@ u24p.buildUI=function(id){ // build User Interface
         btFeature.textContent="feature scape of sampled features"
         btFeature.style.color="blue"
         var spMsg = document.createElement('span')
+        spMsg.style.color='red'
         li.appendChild(spMsg)
-        btFeature.onmouseover=function(){}
+        spSize.onkeyup=function(evt){
+            var ip=$('input',this)[0]
+            var v = parseInt(ip.value)
+            var msg=this.parentElement.children[this.parentElement.children.length-1]
+            if((v>=100)&(v<=10000)){
+                ip.value=v
+                msg.textContent=''
+            }else{
+                msg.textContent=' sample size needs to be an integer between 100 and 10000'
+            }
+        }
         setInterval(function(){
             var v = 0.95*Math.random()
             sp.textContent=v.toString().slice(0,5)
             sp.style.color='rgb('+Math.round(255*v)+','+Math.round(255*(1-v))+',0)'
         },(1000+Math.random()*1000))
+        btFeature.onclick=function(){
+            var caseId=c
+            // http://129.49.249.191:3000/?limit=10&find={%22randval%22:{%22$gte%22:0.9},%22image.caseid%22:%22TCGA-12-3653-01Z-00-DX1%22}
+            window.open('http://sbu-bmi.github.io/featurescape/?http://129.49.249.191:3000/?limit=10&find={%22randval%22:{%22$gte%22:0.9},%22image.caseid%22:%22TCGA-12-3653-01Z-00-DX1%22};lala.js')
+            4
+        }
     })
 
 }
