@@ -10,7 +10,6 @@ fscape=function(x){
     }else{
         console.log('no fscape UI')
     }
-    
 }
 
 fscape.UI=function(){
@@ -332,7 +331,8 @@ fscape.plot=function(x){ // when ready to do it
                 
                 this.textContent="X"
                 setTimeout(function(){
-                    fscape.featuremap(i,j) // not a mistake, the axis need to be switched to fulfll right hand rule
+                    fscape.scatterPlot("featuremapTD",i,j)
+                    //fscape.featuremap(i,j) // not a mistake, the axis need to be switched to fulfll right hand rule
                 },0)
             }
         }
@@ -347,6 +347,8 @@ fscape.plot=function(x){ // when ready to do it
                 var cBack=JSON.parse('['+this.style.color.slice(4,-1).split(', ')+']').map(function(c){return 255-c}).toString()
                 //featuremoreTD.innerHTML='<hr><p style="background-color:'+this.style.color+';color:rgb('+cBack+')">Pearson correlation between <br>'+fi+' <br>'+fj+'<br> = '+Math.round((1-fscape.dt.cl[1][j][i])*100)/100+'</p>'
                 featuremoreTD.innerHTML='<hr><p style="background-color:'+this.style.color+';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p style="color:navy">Pearson correlation between <li style="color:navy">'+fi+' </li><li style="color:navy">'+fj+'</li> |corr('+ii+','+jj+')|= '+jmat.toPrecision(1-fscape.dt.cl[1][ii][jj])+'</p><p style="background-color:'+this.style.color+';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>'
+                $(this).tooltip()[0].title='< '+fi+' , '+fj+' >'
+                4
             }               
         }
         $('td',featurecrossTB).click(tdfun)
@@ -519,11 +521,15 @@ fscape.featuremap=function(i,j){
     //
     if($('#featuremapTD > table').length==0){ // assemblemap
         fscape.dt.n=20//fscape.dt.docs.length/100  // for a n x n table
-        var h='<table>'
+        var h='<div id="2DscatterPlot" style="color:red">processing 2D plot ...</div>'
+        h+='<table id="quantileMap" style="visibility:hidden">' // notice it starts hidden
         h+='<tr><td id="legendFj">fj</td><td></td></tr>'
         h+='<tr><td id="featuremapTableTD"></td><td id="legendFi">fi</td></tr>'
         h+='</table><div id="featuremapMoreDiv"><div>'
         featuremapTD.innerHTML=h
+        // 2d scatter plot
+        fscape.scatterPlot(document.getElementById("2DscatterPlot"),i,j)
+
         // featuremapTableTD
         var hh='<table id="featureheatmapTable">'
         var tii=jmat.range(0,fscape.dt.n-1)
@@ -554,8 +560,11 @@ fscape.featuremap=function(i,j){
         }
         $('#featureheatmapTable >>> td').mouseover(mapTDover)
         legendFi.style.transform="rotate(-90deg)"
+        quantileMap.style.visibility="visible"
         //legendFi.style.transformOrigin="center 100px"
         //<table id="featuremapTable">'
+    }else{
+        fscape.scatterPlot(document.getElementById("2DscatterPlot"),i,j)
     }
     // legends
     legendFi.textContent=fi
@@ -598,6 +607,43 @@ fscape.featuremap=function(i,j){
                 
 
     4
+}
+
+fscape.scatterPlot=function(div0,i,j){
+    // feature names
+    if(typeof(div0)=='string'){div0=document.getElementById(div0)} 
+    div0.innerHTML=''
+    var div = document.createElement('div')
+    //div.id="lala"
+    div0.appendChild(div)
+    var fi=fscape.dt.parmNum[i]
+    var fj=fscape.dt.parmNum[j]
+    var x = fscape.dt.tab[fi]
+    var y = fscape.dt.tab[fj]
+    div.style.width='600px'
+    div.style.height='500px'
+    var trace0 = {
+        x: x,
+        y: y,
+        mode: 'markers',
+        type: 'scatter'
+    }
+    var layout = {
+      //title: 'Quarter 1 Growth',
+      xaxis: {
+        title: fi,
+        showline: false,
+        showgrid: true
+      },
+      yaxis: {
+        title: fj,
+        showline: false,
+        showgrid: true
+      }
+    };
+    Plotly.newPlot(div,[trace0],layout)
+    window.scrollTo(window.innerWidth,window.scrollY)
+
 }
 
 
