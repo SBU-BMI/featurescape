@@ -623,10 +623,11 @@ fscape.scatterPlot=function(div0,i,j){
     div.style.width='600px'
     div.style.height='500px'
     var trace0 = {
+        mode: 'markers',
+        type: 'scatter',
+        symbol:'cross-thin',
         x: x,
         y: y,
-        mode: 'markers',
-        type: 'scatter'
     }
     var layout = {
       //title: 'Quarter 1 Growth',
