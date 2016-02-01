@@ -627,7 +627,7 @@ fscape.scatterPlot=function(div0,i,j){
         type: 'scatter',
         symbol:'cross-thin',
         marker:{
-            size:4
+            size:3
         },
         x: x,
         y: y,
