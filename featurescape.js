@@ -626,6 +626,9 @@ fscape.scatterPlot=function(div0,i,j){
         mode: 'markers',
         type: 'scatter',
         symbol:'cross-thin',
+        marker:{
+            size:4
+        },
         x: x,
         y: y,
     }
@@ -642,8 +645,25 @@ fscape.scatterPlot=function(div0,i,j){
         showgrid: true
       }
     };
-    Plotly.newPlot(div,[trace0],layout)
+    fscape.plt=Plotly.newPlot(div,[trace0],layout)
     window.scrollTo(window.innerWidth,window.scrollY)
+    console.log(fscape.plt._result._fullLayout.xaxis._tmin,fscape.plt._result._fullLayout.xaxis._tmax,fscape.plt._result._fullLayout.yaxis._tmin,fscape.plt._result._fullLayout.yaxis._tmax)
+    var divZ = document.createElement('div')
+    var bt = divZ.innerHTML='<p><button id="resampleBt" style="color:red">Resample from selected region (under development)</button></p><p id="resampleMsg"></p>'
+    div.appendChild(divZ)
+    resampleBt.onclick=function(){
+        var round=function(x){
+            return Math.round(x*10000000000)/10000000000
+        }
+        var xmin = round(fscape.plt._result._fullLayout.xaxis._tmin)
+        var xmax = round(fscape.plt._result._fullLayout.xaxis._tmax)
+        var ymin = round(fscape.plt._result._fullLayout.yaxis._tmin)
+        var ymax = round(fscape.plt._result._fullLayout.yaxis._tmax)
+        var h = '<h3 style="color:maroon">resampling (under development)</h3>'
+        h+='<p style="color:blue">'+fi+': '+xmin+' , '+xmax+'</p>'
+        h+='<p style="color:blue">'+fj+': '+ymin+' , '+ymax+'</p>'
+        resampleMsg.innerHTML=h
+    }
 
 }
 
