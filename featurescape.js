@@ -359,7 +359,9 @@ fscape.plot=function(x){ // when ready to do it
         setTimeout(function(){
             //featureNet.innerHTML='featureNet :-)'
             var doNet=function(cut){ 
-            var width = 960, height = 500;
+            var sz = Math.round(window.innerWidth*0.5)
+            //var width = 960, height = 500;
+            var width = sz, height = sz;
             var color = d3.scale.category20();
             var force = d3.layout.force()
                 .charge(-120)
@@ -525,6 +527,7 @@ fscape.featuremap=function(i,j){
         h+='<table id="quantileMap" style="visibility:hidden">' // notice it starts hidden
         h+='<tr><td id="legendFj">fj</td><td></td></tr>'
         h+='<tr><td id="featuremapTableTD"></td><td id="legendFi">fi</td></tr>'
+        //h+='<tr><td id="legendFj">fj</td><td></td><td id="featuremapTableTD"></td><td id="legendFi">fi</td></tr>'
         h+='</table><div id="featuremapMoreDiv"><div>'
         featuremapTD.innerHTML=h
         // 2d scatter plot
