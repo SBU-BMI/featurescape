@@ -11,5 +11,5 @@ Although the examples below demonstrate the feasibility of the proposed approach
 ### 1. Navigating 1.3 billion measures across 48 dimensions
 live at http://sbu-bmi.github.io/featurescape/u24Preview.html
 
-<a href=“http://sbu-bmi.github.io/featurescape/u24Preview.html” target=“_blank”><img src=“http://sbu-bmi.github.io/featurescape/fun/u24preview.png”></a>
+[![](http://sbu-bmi.github.io/featurescape/fun/u24preview.png)](http://sbu-bmi.github.io/featurescape/u24Preview.html)
 
