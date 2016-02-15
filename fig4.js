@@ -3,16 +3,33 @@ console.log('fig4.js loaded')
 
 window.onload=function(){
     $.getJSON('fig4/patients.json').then(function(x){
-        console.log('loaded '+x.length+' reccords');
+        console.log('loaded '+x.length+' reccords')
+        //y=x
         var msg = function(txt,clr){
             if(!clr){clr="blue"}
             fig4msg.textContent='> '+txt
             fig4msg.style.color=clr
             setTimeout(function(){
                 fig4msg.innerHTML='&nbsp;'
-            },3000)
+            },5000)
         }
         msg('loaded '+x.length+' reccords')
+
+        //unpack data into table, tab
+        var tab = {}
+        var parms = Object.getOwnPropertyNames(x[0])
+        parms.forEach(function(p){
+            tab[p]=[]
+        })
+        x.forEach(function(xi,i){
+            parms.forEach(function(p){
+                tab[p][i]=xi[p]
+            })
+        })
+        
+
+        4
+
 
 
         // build table
