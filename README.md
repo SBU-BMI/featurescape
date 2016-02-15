@@ -1,11 +1,13 @@
 # featurescape
 Interactive representation and analysis of feature landscapes
 ___
-Generic UI is Live application at https://sbu-bmi.github.io/featurescape, for demo applications see below. For **NIH reviewers**, 2 quick links to save on reading:
+Generic Live application at https://sbu-bmi.github.io/featurescape, for demo applications see below. 
 
-**u4preview**: feasability verification live at http://sbu-bmi.github.io/featurescape/u24Preview.html
+For **NIH reviewers**, 2 quick links to save on reading:
 
-**Fig4**: live at https://sbu-bmi.github.io/featurescape/fig4.html. 
+**1) u4preview**: feasability verification live at http://sbu-bmi.github.io/featurescape/u24Preview.html
+
+**2) Fig4**: live at https://sbu-bmi.github.io/featurescape/fig4.html. 
 ___
 
 A number of web applications were developed to assess the feasibility of the featurescape architecture. The key design criteria is the **a)** minimization of compute cycles per usage by balancing server and client side components; **b)** a ***statistical zooming engine *** (client side) that uses a uniformly random seed index (server-side) to resolve multivariate feature spaces, and **c)** maximize the use of *** public Big Data***, such as [NCI’s TCGA](https://tcga-data.nci.nih.gov/tcgafiles/ftp_auth/distro_ftpusers/anonymous/tumor/), by client-side caching in the modern web browser NoSQL engine ([indexedDB](https://www.w3.org/TR/IndexedDB/)). 
