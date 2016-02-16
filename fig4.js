@@ -36,7 +36,7 @@ window.onload=function(){
         // build table
         var h ='<table>'
         		h +='<tr><td id="fig4_1">'
-        			h+='<h3 style="color:maroon">Gene Expression</h3>'
+        			h+='<h3 style="color:maroon">Gene Mutation</h3>'
         			h+='<h4 style="color:navy">EGFR</h4><div id="fig4_1_EGFR"></div>'
         			h+='<h4 style="color:navy">KRAS</h4><div id="fig4_1_KRAS"></div>'
         			h+='<h4 style="color:navy">STK11_LKB1</h4><div id="fig4_1_STK11_LKB1"></div>'
@@ -47,7 +47,7 @@ window.onload=function(){
         	h +='</table>'
         fig4div.innerHTML=h
 
-        var C_fig4_1_EGFR = dc.rowChart("#fig4_1_EGFR")
+        //var C_fig4_1_EGFR = dc.rowChart("#fig4_1_EGFR")
         //var C_fig4_2 = dc.barChart("#fig4_2")
         //var C_fig4_3 = dc.barChart("#fig4_3")
 
@@ -65,9 +65,9 @@ window.onload=function(){
         	gene[gn].C=dc.rowChart("#fig4_1_"+gn)
         	gene[gn].D=cf.dimension(function(d){
 				if(d[gn+'_mutations_code']===0){
-					return 'Low'
+					return 'no mutation'
 				}else if(d[gn+'_mutations_code']===1){
-					return 'High'
+					return 'mutation present'
 				}else {
 					return 'NA'
 				}
@@ -111,7 +111,9 @@ window.onload=function(){
 
         	return gene
         }
+ 
 
+        /*
         var R_fig4_1_EGFR = { // reduce object
         	low:0,
         	high:0,
@@ -162,7 +164,8 @@ window.onload=function(){
 		  .margins({top: 10, right: 50, bottom: 30, left: 40})
 		  .dimension(D_fig4_1_EGFR)
 		  .group(G_fig4_1_EGFR)
-		  
+		*/
+		genePlot('EGFR')  
 		genePlot('KRAS')
 		genePlot('STK11_LKB1')
 		genePlot('TP53')
