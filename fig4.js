@@ -2,8 +2,8 @@ console.log('fig4.js loaded')
 
 
 window.onload=function(){
-    $.getJSON('fig4/patients.json').then(function(x){
-    //$.getJSON('http://129.49.249.175:3000/?collection=patients&limit=1000').then(function(x){  
+    //$.getJSON('fig4/patients.json').then(function(x){
+    $.getJSON('http://129.49.249.175:3000/?collection=patients&limit=1000').then(function(x){  
         console.log('loaded '+x.length+' reccords')
         //y=x
         var msg = function(txt,clr){
@@ -17,7 +17,7 @@ window.onload=function(){
         msg('loaded '+x.length+' reccords')
 
         //unpack data into table, tab
-        var tab = {}
+        tab = {}
         var parms = Object.getOwnPropertyNames(x[0])
         parms.forEach(function(p){
             tab[p]=[]
@@ -34,9 +34,17 @@ window.onload=function(){
 
 
         // build table
-        var h ='<table><tr><td id="fig4_1"><h3 style="color:maroon">Gene Expression</h3><table><tr><td><h4 style="color:navy">EGFR</h4><div id="fig4_1_EGFR"></div></td></tr></table></td></tr>'
-        h +='<tr><td id="fig4_2">Fig4.2</td></tr>'
-        h +='<tr><td id="fig4_3">Fig4.3</td></tr></table>'
+        var h ='<table>'
+        		h +='<tr><td id="fig4_1">'
+        			h+='<h3 style="color:maroon">Gene Expression</h3>'
+        			h+='<h4 style="color:navy">EGFR</h4><div id="fig4_1_EGFR"></div>'
+        			h+='<h4 style="color:navy">KRAS</h4><div id="fig4_1_KRAS"></div>'
+        			h+='<h4 style="color:navy">STK11_LKB1</h4><div id="fig4_1_STK11_LKB1"></div>'
+        			h+='<h4 style="color:navy">TP53</h4><div id="fig4_1_TP53"></div>'
+        		h +='</td></tr>'
+        		h +='<tr><td id="fig4_2">Fig4.2</td></tr>'
+        		h +='<tr><td id="fig4_3">Fig4.3</td></tr>'
+        	h +='</table>'
         fig4div.innerHTML=h
 
         var C_fig4_1_EGFR = dc.rowChart("#fig4_1_EGFR")
@@ -44,6 +52,65 @@ window.onload=function(){
         //var C_fig4_3 = dc.barChart("#fig4_3")
 
         var cf=crossfilter(x)
+
+        gene={}
+        
+        genePlot=function(gn){ // gene name
+        	gene[gn]={}
+        	gene[gn].R={
+				low:0,
+				high:0,
+				NA:0	
+        	}
+        	gene[gn].C=dc.rowChart("#fig4_1_"+gn)
+        	gene[gn].D=cf.dimension(function(d){
+				if(d[gn+'_mutations_code']===0){
+					return 'Low'
+				}else if(d[gn+'_mutations_code']===1){
+					return 'High'
+				}else {
+					return 'NA'
+				}
+			})
+			gene[gn].G=gene[gn].D.group().reduce(
+				// reduce in
+				function(p,v){
+					if(v[gn+'_mutations_code']===0){
+						gene[gn].R.low+=1
+						return gene[gn].R.low
+					}else if(v[gn+'_mutations_code']===1){
+						gene[gn].R.high+=1
+						return gene[gn].R.high
+					}else{
+						gene[gn].R.NA+=1
+						return gene[gn].R.NA
+					}
+				},
+				// reduce out
+				function(p,v){
+					if(v[gn+'_mutations_code']===0){
+						gene[gn].R.low-=1
+						return gene[gn].R.low
+					}else if(v[gn+'_mutations_code']===1){
+						gene[gn].R.high-=1
+						return gene[gn].R.high
+					}else{
+						gene[gn].R.NA-=1
+						return gene[gn].R.NA
+					}
+				},
+				//ini
+				function(){return 0}
+			)
+			gene[gn].C
+			  .width(500)
+			  .height(100)
+			  .margins({top: 10, right: 50, bottom: 30, left: 40})
+			  .dimension(gene[gn].D)
+			  .group(gene[gn].G)
+
+        	return gene
+        }
 
         var R_fig4_1_EGFR = { // reduce object
         	low:0,
@@ -93,11 +160,12 @@ window.onload=function(){
 		  .width(500)
 		  .height(100)
 		  .margins({top: 10, right: 50, bottom: 30, left: 40})
-		  //.transitionDuration(1500)
 		  .dimension(D_fig4_1_EGFR)
 		  .group(G_fig4_1_EGFR)
-		  //.margins({top: 5, left: 10, right: 10, bottom: 20})
 		  
+		genePlot('KRAS')
+		genePlot('STK11_LKB1')
+		genePlot('TP53')
 
 
         // ready to render
