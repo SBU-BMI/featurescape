@@ -108,6 +108,11 @@ window.onload=function(){
 			  .margins({top: 10, right: 50, bottom: 30, left: 40})
 			  .dimension(gene[gn].D)
 			  .group(gene[gn].G)
+			  .elasticX(true)
+			  .colors(d3.scale.linear().domain([0,0.5,1]).range(["blue","yellow","red"]))
+			  .colorAccessor(function(d, i){
+			  	return d.value/(gene[gn].R.NA+gene[gn].R.high+gene[gn].R.low)
+			  })
 
         	return gene
         }
@@ -172,7 +177,8 @@ window.onload=function(){
 
 
         // ready to render
-        dc.renderAll();
+        dc.renderAll()
+        $('.dc-chart g.row text').css('fill','black');
 
 
         4
