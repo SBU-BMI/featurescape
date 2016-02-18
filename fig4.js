@@ -7,11 +7,11 @@ window.onload=function(){
         console.log('loaded '+x.length+' reccords')
         //y=x
         var msg = function(txt,clr){
-            if(!clr){clr="blue"}
+        	if(!clr){clr="blue"}
             fig4msg.textContent='> '+txt
             fig4msg.style.color=clr
             setTimeout(function(){
-                fig4msg.innerHTML='&nbsp;'
+                fig4msg.textContent=""
             },5000)
         }
         msg('loaded '+x.length+' reccords')
@@ -36,18 +36,19 @@ window.onload=function(){
         // build table
         var h ='<table>'
         		h +='<tr><td id="fig4_1" style="vertical-align:top">'
-        			h+='<h3 style="color:maroon">Gene Mutation</h3> <span style="color:maroon">Click on bars to select molecular cohorts,<br>Xaxis: # patients; Yaxis: mutation status<br>[<b style="color:blue">blue</b><b style="color:YellowGreen">-</b><b style="color:red">red</b>] color range indicates fraction of total.</span>'
-        			h+='<h4 style="color:navy">EGFR</h4><div id="fig4_1_EGFR"></div>'
-        			h+='<h4 style="color:navy">KRAS</h4><div id="fig4_1_KRAS"></div>'
-        			h+='<h4 style="color:navy">STK11_LKB1</h4><div id="fig4_1_STK11_LKB1"></div>'
-        			h+='<h4 style="color:navy">TP53</h4><div id="fig4_1_TP53"></div>'
-              		h+='<h4 style="color:navy">NF1</h4><div id="fig4_1_NF1"></div>'
-              		h+='<h4 style="color:navy">BRAF</h4><div id="fig4_1_BRAF"></div>'
-              		h+='<h4 style="color:navy">SETD2</h4><div id="fig4_1_SETD2"></div>'
+        			h+='<h3 style="color:maroon">Gene Mutation</h3>'
+        			h +='<p style="color:maroon">Click on bars to select molecular cohorts,<br>Xaxis: # patients; Yaxis: mutation status<br>[<b style="color:blue">blue</b><b style="color:YellowGreen">-</b><b style="color:red">red</b>] color range indicates fraction of total.</p>'
+        			h+='<h4 style="color:navy" id="fig4_1_EGFR">EGFR</h4>'
+        			h+='<h4 style="color:navy" id="fig4_1_KRAS">KRAS</h4>'
+        			h+='<h4 style="color:navy" id="fig4_1_STK11_LKB1">STK11_LKB1</h4>'
+        			h+='<h4 style="color:navy" id="fig4_1_TP53">TP53</h4>'
+              		h+='<h4 style="color:navy" id="fig4_1_NF1">NF1</h4>'
+              		h+='<h4 style="color:navy" id="fig4_1_BRAF">BRAF</h4>'
+              		h+='<h4 style="color:navy" id="fig4_1_SETD2">SETD2</h4>'
         		h +='</td>'
         		h +='<td id="fig4_2" style="vertical-align:top">'
         			h +='<h3 style="color:maroon">Morphology</h3>'
-        			h +='<span style="color:maroon">Slide mouse click to select ranges<br>Xaxis: parameter value<br>Yaxis: # patients</span>'
+        			h +='<p style="color:maroon">Slide mouse click to select ranges<br>Xaxis: parameter value<br>Yaxis: #patients</p>'
         			h +='<div id="fig4_2_1"></div>'
         			h +='<div id="fig4_2_2"></div>'
         			h +='<div id="fig4_2_3"></div>'
@@ -139,7 +140,7 @@ window.onload=function(){
 
     	morphPlot=function(divId,p){
     		var div = document.getElementById(divId)
-    		div.textContent=p
+    		div.innerHTML=p+'<br>'
     		div.style.color='navy'
     		div.style.fontWeight='bold'
     		morph[p]={}
@@ -152,31 +153,37 @@ window.onload=function(){
     			}else{
     				4
     			}
+    			
     		})
     		morph[p].G=morph[p].D.group().reduce(
 				// reduce in
 				function(p,v){
-					return p+1	
+					return p+1			
 				},
 				// reduce out
 				function(p,v){
-					return p-1	
+					return p-1
 				},
 				// ini
 				function(p,v){
 					return 0
 				}
 			)
+			var xx = tab[p].filter(function(v){return typeof(v)=='number'})
+			var Xmin = xx.reduce(function(a,b){return Math.min(a,b)})
+			var Xmax = xx.reduce(function(a,b){return Math.max(a,b)})
 			morph[p].C
 				.width(300)
-				.height(290)
-				.x(d3.scale.linear())
+				.height(280)
+				//.x(d3.scale.linear())
 				.xUnits(function(){return 30})
 				.renderHorizontalGridLines(true)
 				.renderVerticalGridLines(true)
+				//.y(d3.scale.log().domain([1,100]).range([0,280]))
+				.x(d3.scale.linear().domain([Xmin,Xmax]).range([0,300]))
 				.y(d3.scale.linear())
 				.elasticY(true)
-				.elasticX(true)
+				//.elasticX(true)
 				.dimension(morph[p].D)
 				.group(morph[p].G)
 			
@@ -185,8 +192,8 @@ window.onload=function(){
     	}
 
     	morphPlot("fig4_2_1","StdR_median")
-    	morphPlot("fig4_2_2","StdG_median")
-    	morphPlot("fig4_2_3","StdB_median")
+    	morphPlot("fig4_2_2","Roundness_median")
+    	morphPlot("fig4_2_3","EquivalentSphericalRadius_median")
 
 
 
