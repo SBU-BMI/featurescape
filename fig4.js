@@ -36,7 +36,7 @@ window.onload=function(){
         // build table
         var h ='<table>'
         		h +='<tr><td id="fig4_1" style="vertical-align:top">'
-        			h+='<h3 style="color:maroon">Gene Mutation</h3> <span style="color:maroon">Click on bars to select molecular cohorts,<br>[<b style="color:blue">blue</b><b style="color:YellowGreen">-</b><b style="color:red">red</b>] color range indicates fraction of total.</span>'
+        			h+='<h3 style="color:maroon">Gene Mutation</h3> <span style="color:maroon">Click on bars to select molecular cohorts,<br>Xaxis: # patients; Yaxis: mutation status<br>[<b style="color:blue">blue</b><b style="color:YellowGreen">-</b><b style="color:red">red</b>] color range indicates fraction of total.</span>'
         			h+='<h4 style="color:navy">EGFR</h4><div id="fig4_1_EGFR"></div>'
         			h+='<h4 style="color:navy">KRAS</h4><div id="fig4_1_KRAS"></div>'
         			h+='<h4 style="color:navy">STK11_LKB1</h4><div id="fig4_1_STK11_LKB1"></div>'
@@ -45,7 +45,13 @@ window.onload=function(){
               		h+='<h4 style="color:navy">BRAF</h4><div id="fig4_1_BRAF"></div>'
               		h+='<h4 style="color:navy">SETD2</h4><div id="fig4_1_SETD2"></div>'
         		h +='</td>'
-        		h +='<td id="fig4_2" style="vertical-align:top"><h3 style="color:maroon">Morphology</h3></td>'
+        		h +='<td id="fig4_2" style="vertical-align:top">'
+        			h +='<h3 style="color:maroon">Morphology</h3>'
+        			h +='<span style="color:maroon">Slide mouse click to select ranges<br>Xaxis: parameter value<br>Yaxis: # patients</span>'
+        			h +='<div id="fig4_2_1"></div>'
+        			h +='<div id="fig4_2_2"></div>'
+        			h +='<div id="fig4_2_3"></div>'
+        		h +='</td>'
         		h +='<td id="fig4_3" style="vertical-align:top"><h3 style="color:maroon">Survival<h3></td>'
         	h +='</tr></table>'
         fig4div.innerHTML=h
@@ -56,7 +62,7 @@ window.onload=function(){
 
         var cf=crossfilter(x)
 
-        gene={}
+        var gene={}
 
         genePlot=function(gn){ // gene name
         	gene[gn]={}
@@ -116,63 +122,9 @@ window.onload=function(){
 			  .colorAccessor(function(d, i){
 			  	return d.value/(gene[gn].R.NA+gene[gn].R.high+gene[gn].R.low)
 			  })
-
         	return gene
         }
 
-
-        /*
-        var R_fig4_1_EGFR = { // reduce object
-        	low:0,
-        	high:0,
-        	NA:0
-        }
-        var D_fig4_1_EGFR = cf.dimension(function(d){
-        	if(d.EGFR_mutations_code===0){
-        		return 'Low'
-        	}else if(d.EGFR_mutations_code===1){
-        		return 'High'
-        	}else {
-        		return 'NA'
-        	}
-        })
-        var G_fig4_1_EGFR = D_fig4_1_EGFR.group().reduce(
-            // reduce in
-            function(p,v){
-                if(v.EGFR_mutations_code===0){
-                	R_fig4_1_EGFR.low+=1
-                	return R_fig4_1_EGFR.low
-                }else if(v.EGFR_mutations_code===1){
-                	R_fig4_1_EGFR.high+=1
-                	return R_fig4_1_EGFR.high
-                }else{
-                	R_fig4_1_EGFR.NA+=1
-                	return R_fig4_1_EGFR.NA
-                }
-            },
-            // reduce out
-            function(p,v){
-                if(v.EGFR_mutations_code===0){
-                	R_fig4_1_EGFR.low-=1
-                	return R_fig4_1_EGFR.low
-                }else if(v.EGFR_mutations_code===1){
-                	R_fig4_1_EGFR.high-=1
-                	return R_fig4_1_EGFR.high
-                }else{
-                	R_fig4_1_EGFR.NA-=1
-                	return R_fig4_1_EGFR.NA
-                }
-            },
-            //ini
-            function(){return 0}
-        )
-        C_fig4_1_EGFR
-		  .width(500)
-		  .height(100)
-		  .margins({top: 10, right: 50, bottom: 30, left: 40})
-		  .dimension(D_fig4_1_EGFR)
-		  .group(G_fig4_1_EGFR)
-		*/
 		genePlot('EGFR')
 		genePlot('KRAS')
 		genePlot('STK11_LKB1')
@@ -180,6 +132,63 @@ window.onload=function(){
     	genePlot('NF1')
     	genePlot('BRAF')
     	genePlot('SETD2')
+
+    	// morphPlot
+
+    	morph = {}
+
+    	morphPlot=function(divId,p){
+    		var div = document.getElementById(divId)
+    		div.textContent=p
+    		div.style.color='navy'
+    		div.style.fontWeight='bold'
+    		morph[p]={}
+    		morph[p].R={}
+    		morph[p].C=dc.barChart('#'+divId)
+    		morph[p].D=cf.dimension(function(d){
+    			var v = d[p]
+    			if(v!==""){
+    				return v
+    			}else{
+    				4
+    			}
+    		})
+    		morph[p].G=morph[p].D.group().reduce(
+				// reduce in
+				function(p,v){
+					return p+1	
+				},
+				// reduce out
+				function(p,v){
+					return p-1	
+				},
+				// ini
+				function(p,v){
+					return 0
+				}
+			)
+			morph[p].C
+				.width(300)
+				.height(290)
+				.x(d3.scale.linear())
+				.xUnits(function(){return 30})
+				.renderHorizontalGridLines(true)
+				.renderVerticalGridLines(true)
+				.y(d3.scale.linear())
+				.elasticY(true)
+				.elasticX(true)
+				.dimension(morph[p].D)
+				.group(morph[p].G)
+			
+			return morph
+
+    	}
+
+    	morphPlot("fig4_2_1","StdR_median")
+    	morphPlot("fig4_2_2","StdG_median")
+    	morphPlot("fig4_2_3","StdB_median")
+
+
 
 
         // ready to render
