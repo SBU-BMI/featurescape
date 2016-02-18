@@ -2,8 +2,8 @@ console.log('fig4.js loaded')
 
 
 window.onload=function(){
-    //$.getJSON('fig4/patients.json').then(function(x){
-    $.getJSON('http://129.49.249.175:3000/?collection=patients&limit=1000').then(function(x){  
+    $.getJSON('fig4/patients.json').then(function(x){
+    //$.getJSON('http://129.49.249.175:3000/?collection=patients&limit=1000').then(function(x){
         console.log('loaded '+x.length+' reccords')
         //y=x
         var msg = function(txt,clr){
@@ -27,7 +27,7 @@ window.onload=function(){
                 tab[p][i]=xi[p]
             })
         })
-        
+
 
         4
 
@@ -35,16 +35,19 @@ window.onload=function(){
 
         // build table
         var h ='<table>'
-        		h +='<tr><td id="fig4_1">'
-        			h+='<h3 style="color:maroon">Gene Mutation</h3>'
+        		h +='<tr><td id="fig4_1" style="vertical-align:top">'
+        			h+='<h3 style="color:maroon">Gene Mutation</h3> <span style="color:maroon">Click on bars to select molecular cohorts,<br>[<b style="color:blue">blue</b><b style="color:YellowGreen">-</b><b style="color:red">red</b>] color range indicates fraction of total.</span>'
         			h+='<h4 style="color:navy">EGFR</h4><div id="fig4_1_EGFR"></div>'
         			h+='<h4 style="color:navy">KRAS</h4><div id="fig4_1_KRAS"></div>'
         			h+='<h4 style="color:navy">STK11_LKB1</h4><div id="fig4_1_STK11_LKB1"></div>'
         			h+='<h4 style="color:navy">TP53</h4><div id="fig4_1_TP53"></div>'
-        		h +='</td></tr>'
-        		h +='<tr><td id="fig4_2">Fig4.2</td></tr>'
-        		h +='<tr><td id="fig4_3">Fig4.3</td></tr>'
-        	h +='</table>'
+              		h+='<h4 style="color:navy">NF1</h4><div id="fig4_1_NF1"></div>'
+              		h+='<h4 style="color:navy">BRAF</h4><div id="fig4_1_BRAF"></div>'
+              		h+='<h4 style="color:navy">SETD2</h4><div id="fig4_1_SETD2"></div>'
+        		h +='</td>'
+        		h +='<td id="fig4_2" style="vertical-align:top"><h3 style="color:maroon">Morphology</h3></td>'
+        		h +='<td id="fig4_3" style="vertical-align:top"><h3 style="color:maroon">Survival<h3></td>'
+        	h +='</tr></table>'
         fig4div.innerHTML=h
 
         //var C_fig4_1_EGFR = dc.rowChart("#fig4_1_EGFR")
@@ -54,13 +57,13 @@ window.onload=function(){
         var cf=crossfilter(x)
 
         gene={}
-        
+
         genePlot=function(gn){ // gene name
         	gene[gn]={}
         	gene[gn].R={
 				low:0,
 				high:0,
-				NA:0	
+				NA:0
         	}
         	gene[gn].C=dc.rowChart("#fig4_1_"+gn)
         	gene[gn].D=cf.dimension(function(d){
@@ -116,7 +119,7 @@ window.onload=function(){
 
         	return gene
         }
- 
+
 
         /*
         var R_fig4_1_EGFR = { // reduce object
@@ -170,10 +173,13 @@ window.onload=function(){
 		  .dimension(D_fig4_1_EGFR)
 		  .group(G_fig4_1_EGFR)
 		*/
-		genePlot('EGFR')  
+		genePlot('EGFR')
 		genePlot('KRAS')
 		genePlot('STK11_LKB1')
 		genePlot('TP53')
+    	genePlot('NF1')
+    	genePlot('BRAF')
+    	genePlot('SETD2')
 
 
         // ready to render
