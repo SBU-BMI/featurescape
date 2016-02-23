@@ -53,7 +53,11 @@ window.onload=function(){
         			h +='<div id="fig4_2_2"></div>'
         			h +='<div id="fig4_2_3"></div>'
         		h +='</td>'
-        		h +='<td id="fig4_3" style="vertical-align:top"><h3 style="color:maroon">Survival<h3></td>'
+        		h +='<td id="fig4_3" style="vertical-align:top">'
+        			h +='<h3 style="color:maroon">Survival<h3>'
+        			h +='...'
+        			h +='<div id="survival">Survival</div>'
+        		h +='</td>'
         	h +='</tr></table>'
         fig4div.innerHTML=h
 
@@ -176,7 +180,7 @@ window.onload=function(){
 				.width(300)
 				.height(280)
 				//.x(d3.scale.linear())
-				.xUnits(function(){return 30})
+				.xUnits(function(){return 10})
 				.renderHorizontalGridLines(true)
 				.renderVerticalGridLines(true)
 				//.y(d3.scale.log().domain([1,100]).range([0,280]))
@@ -201,6 +205,75 @@ window.onload=function(){
         // ready to render
         dc.renderAll()
         $('.dc-chart g.row text').css('fill','black');
+
+        survivalPlot=function(){
+        	trace0={
+        		x:tab.months_followup,
+        		y:tab.status,
+        		mode:'markers'
+        	}
+        	// convert status into survival
+        	var x=[], y=[], ind=[]
+        	trace0.x.forEach(function(v,i){
+        		var xi=trace0.x[i]
+        		var yi=trace0.y[i]
+        		if((typeof(xi)=='number')&&(typeof(yi)=='number')){
+        			x.push(xi)
+        			y.push(yi)
+        			ind.push(i)
+        		}
+        	})
+        	var jj = jmat.sort(x)[1]
+        	var surv0={ // calculating survival here
+        		tt:[],
+        		status:[], // survival, we'll have to calculate it
+        		ind:[]
+        	}
+        	jj.map(function(j,i){
+        		surv0.tt[i]=x[j]
+        		surv0.status[i]=y[j] // note this is the former y value (status)
+        		surv0.ind[i]=ind[j]
+        	})
+        	// calculating survival for unique times
+        	survCalc = function(x){ // x is the status, ordered chronologically
+        		var y = [x[0]]
+        		var n = x.length
+        		for(var i = 1; i<n; i++){
+        			y[i]=y[i-1]+x[i]
+        		}
+        		return y.map(function(yi,i){
+        			return (1-yi/(n-i+yi))
+        		})
+        	}
+        	surv0.yy=survCalc(surv0.status)
+        	trace0.x=surv0.tt
+        	trace0.y=surv0.yy
+
+        	//surv0.t=jmat.unique(surv0.tt)
+        	//surv0.alive=[]
+        	//surv0.dead=[]
+        	//surv0.t.forEach(function(ti,i){
+        	//	4
+        	//})
+
+
+        	var layout = {
+				title: 'under development, hold on ...',
+				showlegend: false,
+				xaxis:{
+					type:"linear",
+					title:"months followup"
+				}
+			};
+
+			survival.style.width='500px'
+			survival.style.height='500px'
+
+			data = [trace0]
+        	Plotly.newPlot('survival', data, layout)
+
+        }
+        survivalPlot()
 
 
         4
