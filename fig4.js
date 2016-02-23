@@ -56,7 +56,7 @@ window.onload=function(){
         		h +='<td id="fig4_3" style="vertical-align:top">'
         			h +='<h3 style="color:maroon">Survival<h3>'
         			h +='...'
-        			h +='<div id="survival">Survival</div>'
+        			h +='<div id="survival">...</div>'
         		h +='</td>'
         	h +='</tr></table>'
         fig4div.innerHTML=h
@@ -210,7 +210,7 @@ window.onload=function(){
         	trace0={
         		x:tab.months_followup,
         		y:tab.status,
-        		mode:'markers'
+        		mode:'lines'
         	}
         	// convert status into survival
         	var x=[], y=[], ind=[]
@@ -238,12 +238,15 @@ window.onload=function(){
         	survCalc = function(x){ // x is the status, ordered chronologically
         		var y = [x[0]]
         		var n = x.length
+        		var s = [1]
         		for(var i = 1; i<n; i++){
         			y[i]=y[i-1]+x[i]
+        			s[i]=s[i-1]*(1-1/(n-i+y[i]))	
         		}
-        		return y.map(function(yi,i){
-        			return (1-yi/(n-i+yi))
-        		})
+        		//return y.map(function(yi,i){
+        		//	return (1-yi/(n-i+yi))
+        		//})
+        		return s
         	}
         	surv0.yy=survCalc(surv0.status)
         	trace0.x=surv0.tt
@@ -258,11 +261,15 @@ window.onload=function(){
 
 
         	var layout = {
-				title: 'under development, hold on ...',
+				title: 'Warning - KM estimator under validation',
 				showlegend: false,
 				xaxis:{
-					type:"linear",
+					type:"log",
 					title:"months followup"
+				},
+				yaxis:{
+					type:"log",
+					title:"Survival (KM estimator)"
 				}
 			};
 
