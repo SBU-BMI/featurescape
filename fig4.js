@@ -247,7 +247,8 @@ window.onload=function(){
         		var s = [1]
         		for(var i = 1; i<n; i++){
         			y[i]=y[i-1]+x[i]
-        			s[i]=s[i-1]*(1-1/(n-i+y[i]))	
+        			//s[i]=s[i-1]*(1-1/(n-i+y[i]))	
+        			s[i]=s[i-1]*(1-1/(n-i+y[i]))
         		}
         		//return y.map(function(yi,i){
         		//	return (1-yi/(n-i+yi))
@@ -295,7 +296,8 @@ window.onload=function(){
         		var s = [1]
         		for(var i = 1; i<n; i++){
         			y[i]=y[i-1]+x[i]
-        			s[i]=s[i-1]*(1-1/(n-i+y[i]))	
+        			//s[i]=s[i-1]*(1-x[i]/(n-i+y[i]))	
+        			s[i]=s[i-1]*(1-x[i]/(n-i))	
         		}
         		//return y.map(function(yi,i){
         		//	return (1-yi/(n-i+yi))
