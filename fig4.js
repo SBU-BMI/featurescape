@@ -49,13 +49,14 @@ window.onload=function(){
         		h +='<td id="fig4_2" style="vertical-align:top">'
         			h +='<h3 style="color:maroon">Morphology</h3>'
         			h +='<p style="color:maroon">Slide mouse click to select ranges<br>Xaxis: parameter value<br>Yaxis: #patients</p>'
-        			h +='<div id="fig4_2_1"></div>'
-        			h +='<div id="fig4_2_2"></div>'
-        			h +='<div id="fig4_2_3"></div>'
+        			h +='<div id="fig4_2_1">Var 1: </div>'
+        			h +='<div id="fig4_2_2">Var 1 Zoom: </div>'
+        			h +='<div id="fig4_2_3">Var 2: </div>'
         		h +='</td>'
         		h +='<td id="fig4_3" style="vertical-align:top">'
         			h +='<h3 style="color:maroon">Survival<h3>'
         			h +='...'
+        			h +='<div id="dcSurvival">...</div>'
         			h +='<div id="survival">...</div>'
         		h +='</td>'
         	h +='</tr></table>'
@@ -144,7 +145,7 @@ window.onload=function(){
 
     	morphPlot=function(divId,p){
     		var div = document.getElementById(divId)
-    		div.innerHTML=p+'<br>'
+    		div.innerHTML+=p+'<br>'
     		div.style.color='navy'
     		div.style.fontWeight='bold'
     		morph[p]={}
@@ -159,7 +160,7 @@ window.onload=function(){
     			}
     			
     		})
-    		morph[p].G=morph[p].D.group().reduce(
+    		morph[p].G=morph[p].D.group()/*.reduce(
 				// reduce in
 				function(p,v){
 					return p+1			
@@ -172,7 +173,7 @@ window.onload=function(){
 				function(p,v){
 					return 0
 				}
-			)
+			)*/
 			var xx = tab[p].filter(function(v){return typeof(v)=='number'})
 			var Xmin = xx.reduce(function(a,b){return Math.min(a,b)})
 			var Xmax = xx.reduce(function(a,b){return Math.max(a,b)})
@@ -180,12 +181,14 @@ window.onload=function(){
 				.width(300)
 				.height(280)
 				//.x(d3.scale.linear())
-				.xUnits(function(){return 10})
+				//.xUnitCount(function(){return 10})
+				.xUnits(function(){return 50})
 				.renderHorizontalGridLines(true)
 				.renderVerticalGridLines(true)
 				//.y(d3.scale.log().domain([1,100]).range([0,280]))
 				.x(d3.scale.linear().domain([Xmin,Xmax]).range([0,300]))
 				.y(d3.scale.linear())
+				//.y(d3.scale.log().domain([1,100]).range([1,100]))
 				.elasticY(true)
 				//.elasticX(true)
 				.dimension(morph[p].D)
@@ -196,8 +199,11 @@ window.onload=function(){
     	}
 
     	morphPlot("fig4_2_1","StdR_median")
-    	morphPlot("fig4_2_2","Roundness_median")
-    	morphPlot("fig4_2_3","EquivalentSphericalRadius_median")
+    	morphPlot("fig4_2_2","StdR_median")
+    	morphPlot("fig4_2_3","Roundness_median")
+    	//morphPlot("fig4_2_3","EquivalentSphericalRadius_median")
+    	//morphPlot("fig4_2_3","StdR_median")
+    	
 
 
 
@@ -205,6 +211,54 @@ window.onload=function(){
         // ready to render
         dc.renderAll()
         $('.dc-chart g.row text').css('fill','black');
+
+        survivalCalc=function(){
+        	trace0={
+        		x:tab.months_followup,
+        		y:tab.status,
+        		mode:'lines'
+        	}
+        	// convert status into survival
+        	var x=[], y=[], ind=[]
+        	trace0.x.forEach(function(v,i){
+        		var xi=trace0.x[i]
+        		var yi=trace0.y[i]
+        		if((typeof(xi)=='number')&&(typeof(yi)=='number')){
+        			x.push(xi)
+        			y.push(yi)
+        			ind.push(i)
+        		}
+        	})
+        	var jj = jmat.sort(x)[1]
+        	var surv0={ // calculating survival here
+        		tt:[],
+        		status:[], // survival, we'll have to calculate it
+        		ind:[]
+        	}
+        	jj.map(function(j,i){
+        		surv0.tt[i]=x[j]
+        		surv0.status[i]=y[j] // note this is the former y value (status)
+        		surv0.ind[i]=ind[j]
+        	})
+        	// calculating survival for unique times
+        	survCalc = function(x){ // x is the status, ordered chronologically
+        		var y = [x[0]]
+        		var n = x.length
+        		var s = [1]
+        		for(var i = 1; i<n; i++){
+        			y[i]=y[i-1]+x[i]
+        			s[i]=s[i-1]*(1-1/(n-i+y[i]))	
+        		}
+        		//return y.map(function(yi,i){
+        		//	return (1-yi/(n-i+yi))
+        		//})
+        		return s
+        	}
+        	surv0.yy=survCalc(surv0.status)
+        	trace0.x=surv0.tt
+        	trace0.y=surv0.yy
+        	return surv0
+        }
 
         survivalPlot=function(){
         	trace0={
@@ -264,11 +318,11 @@ window.onload=function(){
 				title: 'Warning - KM estimator under validation',
 				showlegend: false,
 				xaxis:{
-					type:"log",
+					type:"linear",
 					title:"months followup"
 				},
 				yaxis:{
-					type:"log",
+					type:"linear",
 					title:"Survival (KM estimator)"
 				}
 			};
