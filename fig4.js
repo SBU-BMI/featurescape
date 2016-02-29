@@ -23,16 +23,13 @@ window.onload=function(){
             tab[p]=[]
         })
         x.forEach(function(xi,i){
+        	x[i].i=i
             parms.forEach(function(p){
                 tab[p][i]=xi[p]
             })
         })
-
-
-        4
-
-
-
+        docs=x
+        
         // build table
         var h ='<table>'
         		h +='<tr><td id="fig4_1" style="vertical-align:top">'
@@ -49,26 +46,146 @@ window.onload=function(){
         		h +='<td id="fig4_2" style="vertical-align:top">'
         			h +='<h3 style="color:maroon">Morphology</h3>'
         			h +='<p style="color:maroon">Slide mouse click to select ranges<br>Xaxis: parameter value<br>Yaxis: #patients</p>'
-        			h +='<div id="fig4_2_1">Var 1: </div>'
-        			h +='<div id="fig4_2_2">Var 1 Zoom: </div>'
-        			h +='<div id="fig4_2_3">Var 2: </div>'
+        			h +='<div id="fig4_2_1"><span style="color:blue">Var 1: </span></div>'
+        			h +='<div id="fig4_2_2"><span style="color:blue">Var 1 Zoom: </span></div>'
+        			h +='<div id="fig4_2_3"><span style="color:blue">Var 2: </span></div>'
         		h +='</td>'
         		h +='<td id="fig4_3" style="vertical-align:top">'
         			h +='<h3 style="color:maroon">Survival<h3>'
-        			h +='...'
-        			h +='<div id="dcSurvival">...</div>'
-        			h +='<div id="survival">...</div>'
+        			//h +='...'
+        			h +='<div id="survival"></div>'
+        			h +='<div id="dcSurvival"></div>'
+        			h +='<div id="dcStatus"></div>'
+        			
+        			
         		h +='</td>'
         	h +='</tr></table>'
         fig4div.innerHTML=h
 
-        //var C_fig4_1_EGFR = dc.rowChart("#fig4_1_EGFR")
-        //var C_fig4_2 = dc.barChart("#fig4_2")
-        //var C_fig4_3 = dc.barChart("#fig4_3")
+        // Add survival information
+
+        survivalPlot=function(){
+        	trace0={
+        		x:tab.months_followup,
+        		y:tab.status,
+        		mode:'lines'
+        	}
+        	// convert status into survival
+        	var x=[], y=[], ind=[]
+        	trace0.x.forEach(function(v,i){
+        		var xi=trace0.x[i]
+        		var yi=trace0.y[i]
+        		if((typeof(xi)=='number')&&(typeof(yi)=='number')){
+        			x.push(xi)
+        			y.push(yi)
+        			ind.push(i)
+        		}
+        	})
+        	var jj = jmat.sort(x)[1]
+        	surv0={ // calculating survival here
+        		tt:[],
+        		status:[], // survival, we'll have to calculate it
+        		ind:[]
+        	}
+        	jj.map(function(j,i){
+        		surv0.tt[i]=x[j]
+        		surv0.status[i]=y[j] // note this is the former y value (status)
+        		surv0.ind[i]=ind[j]
+        	})
+        	// calculating survival for unique times
+        	survCalc = function(x){ // x is the status, ordered chronologically
+        		var y = [x[0]]
+        		var n = x.length
+        		var s = [1]
+        		for(var i = 1; i<n; i++){
+        			y[i]=y[i-1]+x[i]
+        			s[i]=s[i-1]*(1-x[i]/(n-i))	
+        		}
+        		return s
+        	}
+        	surv0.yy=survCalc(surv0.status)
+        	trace0.x=surv0.tt
+        	trace0.y=surv0.yy
+
+        	surv0.yy.forEach(function(yi,i){
+        		docs[surv0.ind[i]].KM=yi // recording Kaplan Meier in the original docs
+        	})
+
+        	// now only for the selected patients
+        	
+        	if(typeof(dcSurv)!="undefined"){
+        		trace1 = (function(){
+        			//console.log(9)
+        			var xy = dcStatus.G.all().filter(function(xyi){return xyi.value})
+        			var x = [], y = []
+        			xy.map(function(xyi,i){
+        				x[i]=xyi.key[0]
+        				y[i]=xyi.key[1]
+        			})
+        			var ind=jmat.sort(x)[1]
+        			x=[];y=[]
+        			ind.forEach(function(i,j){
+        				if(xy[i].key[0]!==""){
+        					x.push(xy[i].key[0])
+        					y.push(xy[i].key[1])
+        				}
+        			})
+
+        			var n = x.length
+					var s = [1]
+					for(var i = 1; i<n; i++){
+						s[i]=s[i-1]*(1-y[i]/(n-i))
+					}
+
+					return {
+						x:x,
+						y:s
+					}
+        		})()
+        	}
+        	
+
+        	var layout = {
+				//title: 'Warning - KM estimator under validation',
+				showlegend: false,
+				xaxis:{
+					range:[0,250],
+					type:"linear",
+					title:"months followup"
+				},
+				yaxis:{
+					range:[0,1],
+					type:"linear",
+					title:"Survival (KM estimator)"
+				}
+			};
+
+			survival.style.width='600px'
+			survival.style.height='500px'
+
+			if(typeof(trace1)!=='undefined'){
+				data = [trace0,trace1]
+			}else{
+				data = [trace0]
+			}
+
+			
+        	Plotly.newPlot('survival', data, layout)
+        	console.log('plotly',new Date)
+
+        }
+        survivalPlot()
+        x=docs
+
+        // time for cross filter
+        var onFiltered=function(parm){
+        	//console.log(parm,new Date,gene)
+        	survivalPlot(parm)
+        }
 
         var cf=crossfilter(x)
 
-        var gene={}
+        gene={}
 
         genePlot=function(gn){ // gene name
         	gene[gn]={}
@@ -128,6 +245,7 @@ window.onload=function(){
 			  .colorAccessor(function(d, i){
 			  	return d.value/(gene[gn].R.NA+gene[gn].R.high+gene[gn].R.low)
 			  })
+			  .on('filtered',function(){onFiltered(gn)})
         	return gene
         }
 
@@ -177,6 +295,7 @@ window.onload=function(){
 			var xx = tab[p].filter(function(v){return typeof(v)=='number'})
 			var Xmin = xx.reduce(function(a,b){return Math.min(a,b)})
 			var Xmax = xx.reduce(function(a,b){return Math.max(a,b)})
+			var Xn = xx.length
 			morph[p].C
 				.width(300)
 				.height(280)
@@ -193,150 +312,68 @@ window.onload=function(){
 				//.elasticX(true)
 				.dimension(morph[p].D)
 				.group(morph[p].G)
+				.on('filtered',function(){onFiltered(p)})
+				
 			
 			return morph
 
     	}
 
-    	morphPlot("fig4_2_1","StdR_median")
-    	morphPlot("fig4_2_2","StdR_median")
-    	morphPlot("fig4_2_3","Roundness_median")
-    	//morphPlot("fig4_2_3","EquivalentSphericalRadius_median")
-    	//morphPlot("fig4_2_3","StdR_median")
+    	morphPlot("fig4_2_1","Roundness_median")
+    	morphPlot("fig4_2_2","Roundness_median")
+    	morphPlot("fig4_2_3","StdR_median")
+    	
+    	// DC Survival
+
     	
 
+    	dcSurv={
+    		R:[]
+    	}
+    	dcSurv.C=dc.scatterPlot('#'+'dcSurvival')
+    	dcSurv.D=cf.dimension(function(d){
+    		return [d.months_followup,d.KM]
+    	})
+    	dcSurv.G=dcSurv.D.group()
+    	dcSurv.C
+    	 .width(500)
+		 .height(300)
+		 .x(d3.scale.linear().domain([0,250])) //.domain([0, 20])
+		 .y(d3.scale.linear().domain([0,1]))
+		 //.yAxisLabel("Survial (KM estimator)")
+		 //.xAxisLabel("months followup")
+		 //.symbolSize(8)
+		 //.clipPadding(10)
+		 .dimension(dcSurv.D)
+		 .group(dcSurv.G);
 
+
+		dcStatus={
+    		R:[]
+    	}
+    	dcStatus.C=dc.scatterPlot('#'+'dcStatus')
+    	dcStatus.D=cf.dimension(function(d){
+    		return [d.months_followup,d.status]
+    	})
+    	dcStatus.G=dcStatus.D.group()
+    	dcStatus.C
+    	 .width(500)
+		 .height(100)
+		 .x(d3.scale.linear().domain([0,250])) //.domain([0, 20])
+		 .y(d3.scale.linear().domain([-1,2]))
+		 //.yAxisLabel("Survial (KM estimator)")
+		 //.xAxisLabel("months followup")
+		 //.symbolSize(8)
+		 //.clipPadding(10)
+		 .dimension(dcStatus.D)
+		 .group(dcStatus.G);
 
 
         // ready to render
         dc.renderAll()
         $('.dc-chart g.row text').css('fill','black');
 
-        survivalCalc=function(){
-        	trace0={
-        		x:tab.months_followup,
-        		y:tab.status,
-        		mode:'lines'
-        	}
-        	// convert status into survival
-        	var x=[], y=[], ind=[]
-        	trace0.x.forEach(function(v,i){
-        		var xi=trace0.x[i]
-        		var yi=trace0.y[i]
-        		if((typeof(xi)=='number')&&(typeof(yi)=='number')){
-        			x.push(xi)
-        			y.push(yi)
-        			ind.push(i)
-        		}
-        	})
-        	var jj = jmat.sort(x)[1]
-        	var surv0={ // calculating survival here
-        		tt:[],
-        		status:[], // survival, we'll have to calculate it
-        		ind:[]
-        	}
-        	jj.map(function(j,i){
-        		surv0.tt[i]=x[j]
-        		surv0.status[i]=y[j] // note this is the former y value (status)
-        		surv0.ind[i]=ind[j]
-        	})
-        	// calculating survival for unique times
-        	survCalc = function(x){ // x is the status, ordered chronologically
-        		var y = [x[0]]
-        		var n = x.length
-        		var s = [1]
-        		for(var i = 1; i<n; i++){
-        			y[i]=y[i-1]+x[i]
-        			//s[i]=s[i-1]*(1-1/(n-i+y[i]))	
-        			s[i]=s[i-1]*(1-1/(n-i+y[i]))
-        		}
-        		//return y.map(function(yi,i){
-        		//	return (1-yi/(n-i+yi))
-        		//})
-        		return s
-        	}
-        	surv0.yy=survCalc(surv0.status)
-        	trace0.x=surv0.tt
-        	trace0.y=surv0.yy
-        	return surv0
-        }
-
-        survivalPlot=function(){
-        	trace0={
-        		x:tab.months_followup,
-        		y:tab.status,
-        		mode:'lines'
-        	}
-        	// convert status into survival
-        	var x=[], y=[], ind=[]
-        	trace0.x.forEach(function(v,i){
-        		var xi=trace0.x[i]
-        		var yi=trace0.y[i]
-        		if((typeof(xi)=='number')&&(typeof(yi)=='number')){
-        			x.push(xi)
-        			y.push(yi)
-        			ind.push(i)
-        		}
-        	})
-        	var jj = jmat.sort(x)[1]
-        	var surv0={ // calculating survival here
-        		tt:[],
-        		status:[], // survival, we'll have to calculate it
-        		ind:[]
-        	}
-        	jj.map(function(j,i){
-        		surv0.tt[i]=x[j]
-        		surv0.status[i]=y[j] // note this is the former y value (status)
-        		surv0.ind[i]=ind[j]
-        	})
-        	// calculating survival for unique times
-        	survCalc = function(x){ // x is the status, ordered chronologically
-        		var y = [x[0]]
-        		var n = x.length
-        		var s = [1]
-        		for(var i = 1; i<n; i++){
-        			y[i]=y[i-1]+x[i]
-        			//s[i]=s[i-1]*(1-x[i]/(n-i+y[i]))	
-        			s[i]=s[i-1]*(1-x[i]/(n-i))	
-        		}
-        		//return y.map(function(yi,i){
-        		//	return (1-yi/(n-i+yi))
-        		//})
-        		return s
-        	}
-        	surv0.yy=survCalc(surv0.status)
-        	trace0.x=surv0.tt
-        	trace0.y=surv0.yy
-
-        	//surv0.t=jmat.unique(surv0.tt)
-        	//surv0.alive=[]
-        	//surv0.dead=[]
-        	//surv0.t.forEach(function(ti,i){
-        	//	4
-        	//})
-
-
-        	var layout = {
-				title: 'Warning - KM estimator under validation',
-				showlegend: false,
-				xaxis:{
-					type:"linear",
-					title:"months followup"
-				},
-				yaxis:{
-					type:"linear",
-					title:"Survival (KM estimator)"
-				}
-			};
-
-			survival.style.width='500px'
-			survival.style.height='500px'
-
-			data = [trace0]
-        	Plotly.newPlot('survival', data, layout)
-
-        }
-        survivalPlot()
+        
 
 
         4
@@ -350,29 +387,3 @@ window.onload=function(){
 }
 
 
-
-/*
-
-incidentChart
-                .width(360)
-                .height(180)
-                .margins({top: 40, right: 50, bottom: 30, left: 60})
-                .dimension(years)
-                .group(crimeIncidentByYear, "Non-Violent Crime")
-                .valueAccessor(function(d) {
-                    return d.value.nonViolentCrimeAvg;
-                })
-                .stack(crimeIncidentByYear, "Violent Crime", function(d){return d.value.violentCrimeAvg;})
-                .x(d3.scale.linear().domain([1997, 2012]))
-                .renderHorizontalGridLines(true)
-                .centerBar(true)
-                .elasticY(true)
-                .brushOn(false)
-                .legend(dc.legend().x(250).y(10))
-                .title(function(d){
-                    return d.key
-                            + "\nViolent crime per 100k population: " + Math.round(d.value.violentCrimeAvg)
-                            + "\nNon-Violent crime per 100k population: " + Math.round(d.value.nonViolentCrimeAvg);
-                })
-
-*/
