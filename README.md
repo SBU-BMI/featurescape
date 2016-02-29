@@ -19,3 +19,8 @@ live at http://sbu-bmi.github.io/featurescape/u24Preview.html
 
 [![](http://sbu-bmi.github.io/featurescape/fun/u24preview.png)](http://sbu-bmi.github.io/featurescape/u24Preview.html)
 
+### 2. Traversing molecular, morphological and survival data. 
+Demo for 522 patients, each documented for 400+ parameters, live at sbu-bmi.github.io/featurescape/fig4.html.
+
+[![](http://sbu-bmi.github.io/featurescape/fig4.png)](http://sbu-bmi.github.io/featurescape/fig4.html)
+ 
