@@ -36,6 +36,8 @@ fscape.UI=function(){
     
     // check for data URL
     if(location.search.length>1){
+        featureScapeLog.textContent='loading, please wait'
+        featureScapeLog.style.color='red'
         var ss =location.search.slice(1).split(';')
         inputURL.value=ss[0]
         if(ss[1]){
