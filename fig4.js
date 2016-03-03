@@ -69,6 +69,23 @@ window.onload=function(){
 
         // Parameterization
         var morphParms = ["NumberOfPixels_median", "PhysicalSize_median", "NumberOfPixelsOnBorder_median", "FeretDiameter_median", "PrincipalMoments0_median", "PrincipalMoments1_median", "Elongation_median", "Perimeter_median", "Roundness_median", "EquivalentSphericalRadius_median", "EquivalentSphericalPerimeter_median", "EquivalentEllipsoidDiameter0_median", "EquivalentEllipsoidDiameter1_median", "Flatness_median", "MeanR_median", "MeanG_median", "MeanB_median", "StdR_median", "StdG_median", "StdB_median"]
+        searchParms={}
+        location.search.slice(1).split('&').forEach(function(pp){
+			pp=pp.split('=')
+        	searchParms[pp[0]]=pp[1]
+        })
+        // add search parms to list if they are not there
+        if(searchParms.morph1){
+        	if(morphParms.indexOf(searchParms.morph1)==-1){
+        		morphParms.push(searchParms.morph1)
+        	}
+        }
+        if(searchParms.morph2){
+        	if(morphParms.indexOf(searchParms.morph2)==-1){
+        		morphParms.push(searchParms.morph2)
+        	}
+        }
+
         morphParms.forEach(function(p){
         	var op1 = document.createElement('option')
         	op1.value=op1.textContent=p
@@ -79,11 +96,7 @@ window.onload=function(){
         })
         morphParm1.style.width=morphParm2.style.width=200
         // harvest search parameters if any
-        searchParms={}
-        location.search.slice(1).split('&').forEach(function(pp){
-			pp=pp.split('=')
-        	searchParms[pp[0]]=pp[1]
-        })
+        
         if(searchParms.morph1){
         	morphParm1.value=searchParms.morph1
         }else{morphParm1.value="Roundness_median"}
@@ -406,10 +419,7 @@ window.onload=function(){
         $('.dc-chart g.row text').css('fill','black');
 
         // Parameterization
-        (function(){
-        	var parms = ["NumberOfPixels_median", "PhysicalSize_median", "NumberOfPixelsOnBorder_median", "FeretDiameter_median", "PrincipalMoments0_median", "PrincipalMoments1_median", "Elongation_median", "Perimeter_median", "Roundness_median", "EquivalentSphericalRadius_median", "EquivalentSphericalPerimeter_median", "EquivalentEllipsoidDiameter0_median", "EquivalentEllipsoidDiameter1_median", "Flatness_median", "MeanR_median", "MeanG_median", "MeanB_median", "StdR_median", "StdG_median", "StdB_median"]
-        	4
-        })
+        
 
 
         4
