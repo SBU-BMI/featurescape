@@ -45,7 +45,11 @@ window.onload=function(){
         		h +='</td>'
         		h +='<td id="fig4_2" style="vertical-align:top">'
         			h +='<h3 style="color:maroon">Morphology</h3>'
-        			h +='<p style="color:maroon">Slide mouse click to select ranges<br>Xaxis: parameter value<br>Yaxis: #patients</p>'
+        			h +='<p style="color:maroon">'
+        				h +='Var 1: <select id="morphParm1"></select><br>'
+        				h +='Var 2: <select id="morphParm2"></select><br>'
+        				h +='Slide mouse click to select ranges<br>Xaxis: parameter value<br>Yaxis: #patients'
+        			h +='</p>'
         			h +='<div id="fig4_2_1"><span style="color:blue">Var 1: </span></div>'
         			h +='<div id="fig4_2_2"><span style="color:blue">Var 1 Zoom: </span></div>'
         			h +='<div id="fig4_2_3"><span style="color:blue">Var 2: </span></div>'
@@ -54,6 +58,7 @@ window.onload=function(){
         			h +='<h3 style="color:maroon">Survival<h3>'
         			//h +='...'
         			h +='<div id="survival"></div>'
+        			h +='<p>Zoomable KM estimator (i.e. select ranges)</p>'
         			h +='<div id="dcSurvival"></div>'
         			h +='<div id="dcStatus"></div>'
         			
@@ -62,6 +67,33 @@ window.onload=function(){
         	h +='</tr></table>'
         fig4div.innerHTML=h
 
+        // Parameterization
+        var morphParms = ["NumberOfPixels_median", "PhysicalSize_median", "NumberOfPixelsOnBorder_median", "FeretDiameter_median", "PrincipalMoments0_median", "PrincipalMoments1_median", "Elongation_median", "Perimeter_median", "Roundness_median", "EquivalentSphericalRadius_median", "EquivalentSphericalPerimeter_median", "EquivalentEllipsoidDiameter0_median", "EquivalentEllipsoidDiameter1_median", "Flatness_median", "MeanR_median", "MeanG_median", "MeanB_median", "StdR_median", "StdG_median", "StdB_median"]
+        morphParms.forEach(function(p){
+        	var op1 = document.createElement('option')
+        	op1.value=op1.textContent=p
+        	morphParm1.appendChild(op1)
+        	var op2 = document.createElement('option')
+        	op2.value=op2.textContent=p
+        	morphParm2.appendChild(op2)
+        })
+        morphParm1.style.width=morphParm2.style.width=200
+        // harvest search parameters if any
+        searchParms={}
+        location.search.slice(1).split('&').forEach(function(pp){
+			pp=pp.split('=')
+        	searchParms[pp[0]]=pp[1]
+        })
+        if(searchParms.morph1){
+        	morphParm1.value=searchParms.morph1
+        }else{morphParm1.value="Roundness_median"}
+        if(searchParms.morph2){
+        	morphParm2.value=searchParms.morph2
+        }else{morphParm2.value="StdR_median"}
+        morphParm1.onchange=morphParm2.onchange=function(){
+        	location.search='?morph1='+morphParm1.value+'&morph2='+morphParm2.value
+        }
+        4
         // Add survival information
 
         survivalPlot=function(){
@@ -319,9 +351,9 @@ window.onload=function(){
 
     	}
 
-    	morphPlot("fig4_2_1","Roundness_median")
-    	morphPlot("fig4_2_2","Roundness_median")
-    	morphPlot("fig4_2_3","StdR_median")
+    	morphPlot("fig4_2_1",morphParm1.value)
+    	morphPlot("fig4_2_2",morphParm1.value)
+    	morphPlot("fig4_2_3",morphParm2.value)
     	
     	// DC Survival
 
@@ -373,7 +405,11 @@ window.onload=function(){
         dc.renderAll()
         $('.dc-chart g.row text').css('fill','black');
 
-        
+        // Parameterization
+        (function(){
+        	var parms = ["NumberOfPixels_median", "PhysicalSize_median", "NumberOfPixelsOnBorder_median", "FeretDiameter_median", "PrincipalMoments0_median", "PrincipalMoments1_median", "Elongation_median", "Perimeter_median", "Roundness_median", "EquivalentSphericalRadius_median", "EquivalentSphericalPerimeter_median", "EquivalentEllipsoidDiameter0_median", "EquivalentEllipsoidDiameter1_median", "Flatness_median", "MeanR_median", "MeanG_median", "MeanB_median", "StdR_median", "StdG_median", "StdB_median"]
+        	4
+        })
 
 
         4
