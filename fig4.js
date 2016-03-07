@@ -58,7 +58,7 @@ window.onload=function(){
         			h +='<h3 style="color:maroon">Survival<h3>'
         			//h +='...'
         			h +='<div id="survival"></div>'
-        			h +='<p>Zoomable KM estimator (i.e. select ranges)</p>'
+        			h +='<p style="font-size:small">Zoomable KM estimator (i.e. select ranges, each dot is a patient)</p>'
         			h +='<div id="dcSurvival"></div>'
         			h +='<div id="dcStatus"></div>'
         			
@@ -68,7 +68,7 @@ window.onload=function(){
         fig4div.innerHTML=h
 
         // Parameterization
-        var morphParms = ["NumberOfPixels_median", "PhysicalSize_median", "NumberOfPixelsOnBorder_median", "FeretDiameter_median", "PrincipalMoments0_median", "PrincipalMoments1_median", "Elongation_median", "Perimeter_median", "Roundness_median", "EquivalentSphericalRadius_median", "EquivalentSphericalPerimeter_median", "EquivalentEllipsoidDiameter0_median", "EquivalentEllipsoidDiameter1_median", "Flatness_median", "MeanR_median", "MeanG_median", "MeanB_median", "StdR_median", "StdG_median", "StdB_median"]
+        var morphParms = ["NumberOfPixels_median", "PhysicalSize_median", "NumberOfPixelsOnBorder_median", "FeretDiameter_median", "PrincipalMoments0_median", "PrincipalMoments1_median", "Elongation_median", "Perimeter_median", "Roundness_median", "EquivalentSphericalRadius_median", "EquivalentSphericalPerimeter_median", "EquivalentEllipsoidDiameter0_median", "EquivalentEllipsoidDiameter1_median", "Flatness_median", "MeanR_median", "MeanG_median", "MeanB_median", "StdR_median", "StdG_median", "StdB_median"].sort()
         searchParms={}
         location.search.slice(1).split('&').forEach(function(pp){
 			pp=pp.split('=')
@@ -191,7 +191,7 @@ window.onload=function(){
         	
 
         	var layout = {
-				//title: 'Warning - KM estimator under validation',
+				title: 'Blue - whole population; Orange - selected cohort',
 				showlegend: false,
 				xaxis:{
 					range:[0,250],
@@ -201,7 +201,7 @@ window.onload=function(){
 				yaxis:{
 					range:[0,1],
 					type:"linear",
-					title:"Survival (KM estimator)"
+					title:"Survival (Kaplan Meier estimator)"
 				}
 			};
 
