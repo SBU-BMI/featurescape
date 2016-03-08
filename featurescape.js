@@ -669,7 +669,7 @@ fscape.scatterPlot=function(div0,i,j){
         h+='<p style="color:blue">'+fj+': '+ymin+' , '+ymax+'</p>'
         resampleMsg.innerHTML=h
         if(location.search.match('129.49.249.191')){
-            var urlTammy="http://sbu-bmi.github.io/NucleiMugshot/#caseid="+location.search.match('TCGA-[^%]+')[0]+"&fx="+fi+'&xmin='+xmin+'&xmax='+xmax+"&fy="+fi+'&ymin='+ymin+'&ymax='+ymax+'&url='+location.search.match('http://129.49.249.191[^\;]+')[0]
+            var urlTammy="http://sbu-bmi.github.io/NucleiMugshot/#caseid="+location.search.match('TCGA-[^%]+')[0]+"&fx="+fi+'&xmin='+xmin+'&xmax='+xmax+"&fy="+fj+'&ymin='+ymin+'&ymax='+ymax+'&url='+location.search.match('http://129.49.249.191[^\;]+')[0]
             window.open(urlTammy)
         }
 
