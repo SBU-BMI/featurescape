@@ -660,14 +660,20 @@ fscape.scatterPlot=function(div0,i,j){
         var round=function(x){
             return Math.round(x*10000000000)/10000000000
         }
-        var xmin = round(fscape.plt._result._fullLayout.xaxis._tmin)
-        var xmax = round(fscape.plt._result._fullLayout.xaxis._tmax)
-        var ymin = round(fscape.plt._result._fullLayout.yaxis._tmin)
-        var ymax = round(fscape.plt._result._fullLayout.yaxis._tmax)
+        var xmin = fscape.plt._result._fullLayout.xaxis._tmin
+        var xmax = fscape.plt._result._fullLayout.xaxis._tmax
+        var ymin = fscape.plt._result._fullLayout.yaxis._tmin
+        var ymax = fscape.plt._result._fullLayout.yaxis._tmax
         var h = '<h3 style="color:maroon">resampling (under development)</h3>'
         h+='<p style="color:blue">'+fi+': '+xmin+' , '+xmax+'</p>'
         h+='<p style="color:blue">'+fj+': '+ymin+' , '+ymax+'</p>'
         resampleMsg.innerHTML=h
+        if(location.search.match('129.49.249.191')){
+            var urlTammy="http://sbu-bmi.github.io/NucleiMugshot/#caseid="+location.search.match('TCGA-[^%]+')[0]+"&fx="+fi+'&xmin='+xmin+'&xmax='+xmax+"&fy="+fi+'&ymin='+ymin+'&ymax='+xmax+'&url='+location.search.match('http://129.49.249.191[^\;]+')[0]
+            window.open(urlTammy)
+        }
+
+        
     }
 
 }
