@@ -52,7 +52,7 @@ u24p.buildUI=function(id){ // build User Interface
             sp.style.color='rgb('+Math.round(255*v)+','+Math.round(255*(1-v))+',0)'
         },(1000+Math.random()*1000))
         btFeature.onclick=function(){
-            //var caseId=c
+            var caseId=c
             // http://129.49.249.191:3000/?limit=10&find={%22randval%22:{%22$gte%22:0.9},%22image.caseid%22:%22TCGA-12-3653-01Z-00-DX1%22}
             var sz=$('input',spSize)[0].value
             window.open('http://sbu-bmi.github.io/featurescape/?http://129.49.249.191:3000/?limit='+sz+'&find={%22randval%22:{%22$gte%22:'+sp.textContent+'},%22image.caseid%22:%22' + caseId + '%22};fun/u24demo.js')
