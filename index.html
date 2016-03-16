@@ -1,41 +1,51 @@
 <html>
 <head>
-<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.3.0/localforage.min.js"></script>
-<script src="https://jonasalmeida.github.io/jmat/jmat.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
-<script src="https://cdn.rawgit.com/MasterMaps/d3-slider/master/d3.slider.js"></script>
-<link rel="stylesheet" href="https://cdn.rawgit.com/MasterMaps/d3-slider/master/d3.slider.css">
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-<!--
-<script src="https://mathbiol.github.io/openHealth/openHealth.js"></script>
-<script src="https://mathbiol.github.io/openHealth/openHealth.js"></script>
-<script src="http://localhost:8000/openHealth/openHealth.js"></script>
-<script src="https://square.github.io/crossfilter/crossfilter.v1.min.js"></script>
-<script src="https://dc-js.github.io/dc.js/js/dc.js"></script>
-<link rel="stylesheet" href="https://dc-js.github.io/dc.js/css/dc.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.3.0/localforage.min.js"></script>
+    <script src="https://jonasalmeida.github.io/jmat/jmat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+    <script src="https://cdn.rawgit.com/MasterMaps/d3-slider/master/d3.slider.js"></script>
+    <link rel="stylesheet" href="https://cdn.rawgit.com/MasterMaps/d3-slider/master/d3.slider.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!--
+    <script src="https://mathbiol.github.io/openHealth/openHealth.js"></script>
+    <script src="https://mathbiol.github.io/openHealth/openHealth.js"></script>
+    <script src="http://localhost:8000/openHealth/openHealth.js"></script>
+    <script src="https://square.github.io/crossfilter/crossfilter.v1.min.js"></script>
+    <script src="https://dc-js.github.io/dc.js/js/dc.js"></script>
+    <link rel="stylesheet" href="https://dc-js.github.io/dc.js/css/dc.css" rel="stylesheet">
 
-<script src="https://www.google.com/jsapi"></script>
--->
-
+    <script src="https://www.google.com/jsapi"></script>
+    -->
 
 
 </head>
 <body>
-	<div class="container" id="featureScapeRoot">
-		<div id="featureScapeHeader">
-			<h3>FeatureScape <a href="https://github.com/SBU-BMI/featurescape" target=_blank><i class="fa fa-github-alt"></i> <span style="font-size:small;background-color:yellow;color:red"><i class="fa fa-arrow-left"></i> Preliminary demo of integrative use of multiple FeatureScape tools</span></a></h3>
-			<span id="featureScapeLog">Interactive representation and analysis of feature landscapes</span>
-			<hr>
-		</div>
-		<div id="featureScapeDiv"></div>
-		<hr>
-		<a href="http://sbu-bmi.github.io/featurescape/?https://0857f9879749e82d493945f8a805968a7c031889-www.googledrive.com/host/0BwwZEXS3GesiTjlHSmlOcEJaeDA/featurescape/nuclei1000.json">demo</a>
-		</div>
-	<script src="featurescape.js"></script>
+<div class="container" id="featureScapeRoot">
+    <div id="featureScapeHeader">
+        <h3>FeatureScape <a href="https://github.com/SBU-BMI/featurescape" target=_blank><i
+                class="fa fa-github-alt"></i> <span style="font-size:small;background-color:yellow;color:red"><i
+                class="fa fa-arrow-left"></i> Preliminary demo of integrative use of multiple FeatureScape tools</span></a>
+        </h3>
+        <span id="featureScapeLog">Interactive representation and analysis of feature landscapes</span>
+        <hr>
+    </div>
+    <div id="featureScapeDiv"></div>
+    <hr>
+    <a id="demo">demo</a>
+    <script>
+        var domain = 'sbu-bmi.github.io';
+        //var domain = 'localhost:63342';
+        var url = "http://" + domain + "/featurescape/?https://0857f9879749e82d493945f8a805968a7c031889-www.googledrive.com/host/0BwwZEXS3GesiTjlHSmlOcEJaeDA/featurescape/nuclei1000.json";
+        var a = document.getElementById('demo');
+        a.href = url;
+    </script>
+
+</div>
+<script src="featurescape.js"></script>
 </body>
 </html>
