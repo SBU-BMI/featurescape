@@ -1,5 +1,6 @@
 <html>
 <head>
+    <script src="fun/config.js"></script>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
@@ -21,8 +22,6 @@
 
     <script src="https://www.google.com/jsapi"></script>
     -->
-
-
 </head>
 <body>
 <div class="container" id="featureScapeRoot">
@@ -38,9 +37,7 @@
     <hr>
     <a id="demo">demo</a>
     <script>
-        var domain = 'sbu-bmi.github.io';
-        //var domain = 'localhost:63342';
-        var url = "http://" + domain + "/featurescape/?https://0857f9879749e82d493945f8a805968a7c031889-www.googledrive.com/host/0BwwZEXS3GesiTjlHSmlOcEJaeDA/featurescape/nuclei1000.json";
+        var url = "http://" + config.domain + "/featurescape/?https://0857f9879749e82d493945f8a805968a7c031889-www.googledrive.com/host/0BwwZEXS3GesiTjlHSmlOcEJaeDA/featurescape/nuclei1000.json";
         var a = document.getElementById('demo');
         a.href = url;
     </script>

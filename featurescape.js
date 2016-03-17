@@ -711,10 +711,8 @@ fscape.scatterPlot = function (div0, i, j) {
         h += '<p style="color:blue">' + fi + ': ' + xmin + ' , ' + xmax + '</p>';
         h += '<p style="color:blue">' + fj + ': ' + ymin + ' , ' + ymax + '</p>';
         resampleMsg.innerHTML = h;
-        if (location.search.match('129.49.249.191')) {
-            var domain = 'sbu-bmi.github.io';
-            //var domain = 'localhost:63342';
-            var urlTammy = "http://" + domain + "/NucleiMugshot/#caseid=" + location.search.match('TCGA-[^%]+')[0] + "&fx=" + fi + '&xmin=' + xmin + '&xmax=' + xmax + "&fy=" + fj + '&ymin=' + ymin + '&ymax=' + ymax + '&url=' + location.search.match('http://129.49.249.191[^\;]+')[0];
+        if (location.search.match(config.findAPI)) {
+            var urlTammy = "http://" + config.domain + "/NucleiMugshot/#caseid=" + location.search.match('TCGA-[^%]+')[0] + "&fx=" + fi + '&xmin=' + xmin + '&xmax=' + xmax + "&fy=" + fj + '&ymin=' + ymin + '&ymax=' + ymax + '&url=' + location.search.match('http://' + config.findAPI + '[^\;]+')[0];
             window.open(urlTammy);
         }
 

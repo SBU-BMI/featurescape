@@ -1,0 +1,7 @@
+var config = {
+    domain: 'sbu-bmi.github.io',
+    //domain: 'localhost:63342',
+    findAPI: '129.49.249.175',
+    //findAPI: '129.49.249.191',
+    port: 3000
+};
