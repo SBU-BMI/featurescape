@@ -105,7 +105,7 @@ fscape.UI = function () {
         cancel: function () {
         },
         linkType: "direct",
-        multiselect: false,
+        multiselect: false
         //extensions: ['.json', '.txt', '.csv'],
     };
 
@@ -299,7 +299,8 @@ fscape.plot = function (x) { // when ready to do it
             if (typeof(xij) != 'number') {
                 console.log('non-numeric value at (' + i + ',' + j + '), ' + xij)//+' - the whole row will be removed:',xi)
                 ij2remove.push(j)
-            };
+            }
+            ;
         })
     });
     ij2remove = jmat.unique(ij2remove).sort().reverse();
@@ -664,7 +665,7 @@ fscape.scatterPlot = function (div0, i, j) {
             size: 3
         },
         x: x,
-        y: y,
+        y: y
     };
     var layout = {
         //title: 'Quarter 1 Growth',
@@ -685,37 +686,37 @@ fscape.scatterPlot = function (div0, i, j) {
     //console.log(fscape.plt._result._fullLayout.xaxis._tmin, fscape.plt._result._fullLayout.xaxis._tmax, fscape.plt._result._fullLayout.yaxis._tmin, fscape.plt._result._fullLayout.yaxis._tmax);
     console.log(div._fullLayout.xaxis._tmin, div._fullLayout.xaxis._tmax, div._fullLayout.yaxis._tmin, div._fullLayout.yaxis._tmax);
 
-    var divZ = document.createElement('div');
-    var bt = divZ.innerHTML = '<p><button id="resampleBt" style="color:red">Resample from selected region (under development)</button></p><p id="resampleMsg"></p>';
-    div.appendChild(divZ);
-    resampleBt.onclick = function () {
-        var round = function (x) {
-            return Math.round(x * 10000000000) / 10000000000
-        };
+    if (location.search.match(config.findAPI)) {
+        var divZ = document.createElement('div');
+        var bt = divZ.innerHTML = '<p><button id="resampleBt" style="color:red">Resample from selected region (under development)</button></p><p id="resampleMsg"></p>';
+        div.appendChild(divZ);
+        resampleBt.onclick = function () {
+            var round = function (x) {
+                return Math.round(x * 10000000000) / 10000000000
+            };
 
-        /*
-        // Error: fscape.plt._result = undefined.
-        var xmin = fscape.plt._result._fullLayout.xaxis._tmin;
-        var xmax = fscape.plt._result._fullLayout.xaxis._tmax;
-        var ymin = fscape.plt._result._fullLayout.yaxis._tmin;
-        var ymax = fscape.plt._result._fullLayout.yaxis._tmax;
-        */
+            /*
+             // Error: fscape.plt._result = undefined.
+             var xmin = fscape.plt._result._fullLayout.xaxis._tmin;
+             var xmax = fscape.plt._result._fullLayout.xaxis._tmax;
+             var ymin = fscape.plt._result._fullLayout.yaxis._tmin;
+             var ymax = fscape.plt._result._fullLayout.yaxis._tmax;
+             */
 
-        // Plotly will attach the plot information to the div that you specify.
-        var xmin = div._fullLayout.xaxis._tmin;
-        var xmax = div._fullLayout.xaxis._tmax;
-        var ymin = div._fullLayout.yaxis._tmin;
-        var ymax = div._fullLayout.yaxis._tmax;
+            // Plotly will attach the plot information to the div that you specify.
+            var xmin = div._fullLayout.xaxis._tmin;
+            var xmax = div._fullLayout.xaxis._tmax;
+            var ymin = div._fullLayout.yaxis._tmin;
+            var ymax = div._fullLayout.yaxis._tmax;
 
-        var h = '<h3 style="color:maroon">resampling (under development)</h3>';
-        h += '<p style="color:blue">' + fi + ': ' + xmin + ' , ' + xmax + '</p>';
-        h += '<p style="color:blue">' + fj + ': ' + ymin + ' , ' + ymax + '</p>';
-        resampleMsg.innerHTML = h;
-        if (location.search.match(config.findAPI)) {
+            var h = '<h3 style="color:maroon">resampling (under development)</h3>';
+            h += '<p style="color:blue">' + fi + ': ' + xmin + ' , ' + xmax + '</p>';
+            h += '<p style="color:blue">' + fj + ': ' + ymin + ' , ' + ymax + '</p>';
+            resampleMsg.innerHTML = h;
             var urlTammy = "http://" + config.domain + "/NucleiMugshot/#caseid=" + location.search.match('TCGA-[^%]+')[0] + "&fx=" + fi + '&xmin=' + xmin + '&xmax=' + xmax + "&fy=" + fj + '&ymin=' + ymin + '&ymax=' + ymax + '&url=' + location.search.match('http://' + config.findAPI + '[^\;]+')[0];
             window.open(urlTammy);
-        }
 
+        }
     }
 
 };
