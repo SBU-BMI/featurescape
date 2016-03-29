@@ -55,14 +55,15 @@ u24p.buildUI = function (id) { // build User Interface
             var caseId = c;
 
             var api = config.findAPI,
-                port = config.port;
+                port = config.port,
+                anexid = config.analysis_execution_id;
 
             var findApi = 'http://' + api + ':' + port + '/';
             // findApi + ?limit=10&find={%22randval%22:{%22$gte%22:0.9},%22image.caseid%22:%22TCGA-12-3653-01Z-00-DX1%22}
             var sz = $('input', spSize)[0].value;
 
             var quot = "%22";
-            var _static = quot + 'provenance.analysis_execution_id' + quot + ':' + quot + 'lung-features' + quot;
+            var _static = quot + 'provenance.analysis_execution_id' + quot + ':' + quot + anexid + quot;
             window.open('http://' + config.domain + '/featurescape/?' + findApi + '?limit=' + sz + '&find={%22randval%22:{%22$gte%22:' + sp.textContent + '},' + _static + ',%22image.caseid%22:%22' + caseId + '%22};fun/u24demo.js');
 
             4
