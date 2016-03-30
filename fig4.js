@@ -44,7 +44,7 @@ window.onload=function(){
               		h+='<h4 style="color:navy" id="fig4_1_SETD2">SETD2</h4>'
         		h +='</td>'
         		h +='<td id="fig4_2" style="vertical-align:top">'
-        			h +='<h3 style="color:maroon">Morphology</h3>'
+        			h +='<h3 style="color:maroon">Morphology, Epi, etc</h3>'
         			h +='<p style="color:maroon">'
         				h +='Var 1: <select id="morphParm1"></select><br>'
         				h +='Var 2: <select id="morphParm2"></select><br>'
@@ -68,7 +68,15 @@ window.onload=function(){
         fig4div.innerHTML=h
 
         // Parameterization
-        var morphParms = ["NumberOfPixels_median", "PhysicalSize_median", "NumberOfPixelsOnBorder_median", "FeretDiameter_median", "PrincipalMoments0_median", "PrincipalMoments1_median", "Elongation_median", "Perimeter_median", "Roundness_median", "EquivalentSphericalRadius_median", "EquivalentSphericalPerimeter_median", "EquivalentEllipsoidDiameter0_median", "EquivalentEllipsoidDiameter1_median", "Flatness_median", "MeanR_median", "MeanG_median", "MeanB_median", "StdR_median", "StdG_median", "StdB_median"].sort()
+        var morphParms = ["NumberOfPixels_median", "PhysicalSize_median", "NumberOfPixelsOnBorder_median", "FeretDiameter_median", "PrincipalMoments0_median", "PrincipalMoments1_median", "Elongation_median", "Perimeter_median", "Roundness_median", "EquivalentSphericalRadius_median", "EquivalentSphericalPerimeter_median", "EquivalentEllipsoidDiameter0_median", "EquivalentEllipsoidDiameter1_median", "Flatness_median", "MeanR_median", "MeanG_median", "MeanB_median", "StdR_median", "StdG_median", "StdB_median","age_at_initial_pathologic_diagno","est_days_to_remission","K17_group","Stage","Tumor","gender_code","hist_code"]
+        morphParms.sort(function(a,b){
+        	var val = (a.toUpperCase()>b.toUpperCase())
+        	if(val){
+        		return 1
+        	}else{
+        		return -1
+        	}
+        })
         searchParms={}
         location.search.slice(1).split('&').forEach(function(pp){
 			pp=pp.split('=')
@@ -216,7 +224,7 @@ window.onload=function(){
 
 			
         	Plotly.newPlot('survival', data, layout)
-        	console.log('plotly',new Date)
+        	//console.log('plotly',new Date)
 
         }
         survivalPlot()
