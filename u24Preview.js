@@ -7,8 +7,6 @@ u24p = function () {
 
 };
 
-u24p.cases = ["TCGA-05-4395-01Z-00-DX1", "TCGA-05-4415-01Z-00-DX1", "TCGA-05-4417-01Z-00-DX1", "TCGA-35-3615-01Z-00-DX1", "TCGA-38-4627-01Z-00-DX1", "TCGA-38-4628-01Z-00-DX1", "TCGA-44-2661-01Z-00-DX1", "TCGA-44-6779-01Z-00-DX1", "TCGA-44-7671-01Z-00-DX1", "TCGA-49-4487-01Z-00-DX1", "TCGA-49-4494-01Z-00-DX1", "TCGA-49-4501-01Z-00-DX1", "TCGA-50-7109-01Z-00-DX1", "TCGA-53-7813-01Z-00-DX1", "TCGA-55-1596-01Z-00-DX1", "TCGA-55-6970-01Z-00-DX1", "TCGA-55-6980-01Z-00-DX1", "TCGA-55-6981-01Z-00-DX1", "TCGA-55-6983-01Z-00-DX1", "TCGA-55-7574-01Z-00-DX1", "TCGA-64-5774-01Z-00-DX1", "TCGA-67-3772-01Z-00-DX1", "TCGA-67-6217-01Z-00-DX1", "TCGA-73-7498-01Z-00-DX1", "TCGA-75-5146-01Z-00-DX1", "TCGA-75-6212-01Z-00-DX1", "TCGA-75-7025-01Z-00-DX1", "TCGA-75-7031-01Z-00-DX1", "TCGA-78-7148-01Z-00-DX1", "TCGA-78-7158-01Z-00-DX1", "TCGA-78-7160-01Z-00-DX1", "TCGA-78-7161-01Z-00-DX1", "TCGA-78-7166-01Z-00-DX1", "TCGA-78-7167-01Z-00-DX1", "TCGA-78-7535-01Z-00-DX1", "TCGA-78-7536-01Z-00-DX1", "TCGA-80-5608-01Z-00-DX1", "TCGA-86-7713-01Z-00-DX1"];
-u24p.ftrs = ["NumberOfPixels", "PhysicalSize", "NumberOfPixelsOnBorder", "FeretDiameter", "PrincipalMoments0", "PrincipalMoments1", "Elongation", "Perimeter", "Roundness", "EquivalentSphericalRadius", "EquivalentSphericalPerimeter", "EquivalentEllipsoidDiameter0", "EquivalentEllipsoidDiameter1", "Flatness", "MeanR", "MeanG", "MeanB", "StdR", "StdG", "StdB"];
 
 u24p.buildUI = function (id) { // build User Interface
     var div = document.getElementById(id);
@@ -16,6 +14,7 @@ u24p.buildUI = function (id) { // build User Interface
     var ol = document.createElement('ol');
     div.appendChild(ol);
     u24p.cases.forEach(function (c) {
+        c = c.image.caseid;
         var li = document.createElement('li');
         ol.appendChild(li);
         li.innerHTML = '<a href="http://reserve4.informatics.stonybrook.edu/dev1/osdCamicroscope.php?tissueId=' + c + '" target="_blank">' + c + '</a>, (<a href="http://www.cbioportal.org/case.do?cancer_study_id=luad_tcga&case_id=' + c.slice(0, 12) + '" target="_blank" style="color:red">cbio</a>) random seed:';
@@ -54,17 +53,12 @@ u24p.buildUI = function (id) { // build User Interface
         btFeature.onclick = function () {
             var caseId = c;
 
-            var api = config.findAPI,
-                port = config.port,
-                anexid = config.analysis_execution_id;
-
-            var findApi = 'http://' + api + ':' + port + '/';
             // findApi + ?limit=10&find={%22randval%22:{%22$gte%22:0.9},%22image.caseid%22:%22TCGA-12-3653-01Z-00-DX1%22}
             var sz = $('input', spSize)[0].value;
 
             var quot = "%22";
-            var _static = quot + 'provenance.analysis_execution_id' + quot + ':' + quot + anexid + quot;
-            window.open('http://' + config.domain + '/featurescape/?' + findApi + '?limit=' + sz + '&find={%22randval%22:{%22$gte%22:' + sp.textContent + '},' + _static + ',%22image.caseid%22:%22' + caseId + '%22};fun/u24demo.js');
+            var _static = quot + 'provenance.analysis_execution_id' + quot + ':' + quot + u24p.anexid + quot;
+            window.open('http://' + config.domain + '/featurescape/?' + u24p.findApi + '?limit=' + sz + '&find={%22randval%22:{%22$gte%22:' + sp.textContent + '},' + _static + ',%22image.caseid%22:%22' + caseId + '%22};fun/u24demo.js');
 
             4
         }
@@ -75,5 +69,22 @@ u24p.buildUI = function (id) { // build User Interface
 
 // ini
 $(document).ready(function () {
-    u24p()
+    //u24p.cases = ["TCGA-05-4395-01Z-00-DX1", "TCGA-05-4415-01Z-00-DX1", "TCGA-05-4417-01Z-00-DX1", "TCGA-35-3615-01Z-00-DX1", "TCGA-38-4627-01Z-00-DX1", "TCGA-38-4628-01Z-00-DX1", "TCGA-44-2661-01Z-00-DX1", "TCGA-44-6779-01Z-00-DX1", "TCGA-44-7671-01Z-00-DX1", "TCGA-49-4487-01Z-00-DX1", "TCGA-49-4494-01Z-00-DX1", "TCGA-49-4501-01Z-00-DX1", "TCGA-50-7109-01Z-00-DX1", "TCGA-53-7813-01Z-00-DX1", "TCGA-55-1596-01Z-00-DX1", "TCGA-55-6970-01Z-00-DX1", "TCGA-55-6980-01Z-00-DX1", "TCGA-55-6981-01Z-00-DX1", "TCGA-55-6983-01Z-00-DX1", "TCGA-55-7574-01Z-00-DX1", "TCGA-64-5774-01Z-00-DX1", "TCGA-67-3772-01Z-00-DX1", "TCGA-67-6217-01Z-00-DX1", "TCGA-73-7498-01Z-00-DX1", "TCGA-75-5146-01Z-00-DX1", "TCGA-75-6212-01Z-00-DX1", "TCGA-75-7025-01Z-00-DX1", "TCGA-75-7031-01Z-00-DX1", "TCGA-78-7148-01Z-00-DX1", "TCGA-78-7158-01Z-00-DX1", "TCGA-78-7160-01Z-00-DX1", "TCGA-78-7161-01Z-00-DX1", "TCGA-78-7166-01Z-00-DX1", "TCGA-78-7167-01Z-00-DX1", "TCGA-78-7535-01Z-00-DX1", "TCGA-78-7536-01Z-00-DX1", "TCGA-80-5608-01Z-00-DX1", "TCGA-86-7713-01Z-00-DX1"];
+    u24p.cases = [];
+    u24p.ftrs = ["NumberOfPixels", "PhysicalSize", "NumberOfPixelsOnBorder", "FeretDiameter", "PrincipalMoments0", "PrincipalMoments1", "Elongation", "Perimeter", "Roundness", "EquivalentSphericalRadius", "EquivalentSphericalPerimeter", "EquivalentEllipsoidDiameter0", "EquivalentEllipsoidDiameter1", "Flatness", "MeanR", "MeanG", "MeanB", "StdR", "StdG", "StdB"];
+
+    u24p.findApi = 'http://' + config.findAPI + ':' + config.port + '/';
+    u24p.anexid = config.analysis_execution_id;
+    var url = u24p.findApi + '?limit=38&collection=metadata&find={%22provenance.analysis_execution_id%22:%22' + u24p.anexid + '%22}';
+    console.log(url);
+
+    $.ajax({
+        url: url,
+        async: false,
+        dataType: 'json',
+        success: function (json) {
+            u24p.cases = json;
+            u24p();
+        }
+    });
 });
