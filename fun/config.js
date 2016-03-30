@@ -5,6 +5,6 @@ var config = {
     //domain: 'localhost:63342',
     findAPI: '129.49.249.175',
     //findAPI: '129.49.249.191',
-    port: 4500,
+    port: 3000,
     analysis_execution_id: 'lung-features-v4'
 };
