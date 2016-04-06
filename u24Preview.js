@@ -17,7 +17,7 @@ u24p.buildUI = function (id) { // build User Interface
         c = c.image.caseid;
         var li = document.createElement('li');
         ol.appendChild(li);
-        li.innerHTML = '<a href="http://reserve4.informatics.stonybrook.edu/dev1/osdCamicroscope.php?tissueId=' + c + '" target="_blank">' + c + '</a>, (<a href="http://www.cbioportal.org/case.do?cancer_study_id=luad_tcga&case_id=' + c.slice(0, 12) + '" target="_blank" style="color:red">cbio</a>) random seed:';
+        li.innerHTML = '<a href="' + config.quipUrl + '?tissueId=' + c + '" target="_blank">' + c + '</a>, (<a href="http://www.cbioportal.org/case.do?cancer_study_id=luad_tcga&case_id=' + c.slice(0, 12) + '" target="_blank" style="color:red">cbio</a>) random seed:';
         var sp = document.createElement('span');
         li.appendChild(sp);
         //http://www.cbioportal.org/case.do?cancer_study_id=luad_tcga&case_id=TCGA-05-4395
