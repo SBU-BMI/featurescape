@@ -3,8 +3,9 @@ console.log('config.js');
 var config = {
     domain: 'sbu-bmi.github.io',
     //domain: 'localhost:63342/projects',
-    findAPI: '129.49.249.175',
+    //findAPI: '129.49.249.175',
     //findAPI: '129.49.249.191',
+    findAPI: 'https://tahsin175.informatics.stonybrook.edu',
     //port: 3000,
     port: 4500,
     quipUrl: 'http://quip.bmi.stonybrook.edu/camicroscope_latest/osdCamicroscope.php',
