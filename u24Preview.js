@@ -73,7 +73,7 @@ $(document).ready(function () {
     u24p.cases = [];
     u24p.ftrs = ["NumberOfPixels", "PhysicalSize", "NumberOfPixelsOnBorder", "FeretDiameter", "PrincipalMoments0", "PrincipalMoments1", "Elongation", "Perimeter", "Roundness", "EquivalentSphericalRadius", "EquivalentSphericalPerimeter", "EquivalentEllipsoidDiameter0", "EquivalentEllipsoidDiameter1", "Flatness", "MeanR", "MeanG", "MeanB", "StdR", "StdG", "StdB"];
 
-    u24p.findApi = 'http://' + config.findAPI + ':' + config.port + '/';
+    u24p.findApi = config.findAPI + ':' + config.port + '/';
     u24p.anexid = config.analysis_execution_id;
     var url = u24p.findApi + '?limit=38&collection=metadata&find={%22provenance.analysis_execution_id%22:%22' + u24p.anexid + '%22}';
     console.log(url);
