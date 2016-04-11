@@ -75,7 +75,7 @@ window.onload=function(){
         				h +='Var 1: <select id="morphParm1"></select><br>'
         				h +='Var 2: <select id="morphParm2"></select><br>'
         				h +='Var 3: <select id="morphParm3"></select><br>'
-        				h +='Slide mouse click to select ranges<br>Xaxis: parameter value<br>Yaxis: #patients'
+        				h +='Slide mouse click to select ranges<br>Xaxis: parameter value, Yaxis: #patients'
         			h +='</p>'
         			h +='<div id="fig4_2_1"><span style="color:blue">Var 1: </span></div>'
         			h +='<div id="fig4_2_2"><span style="color:blue">Var 2: </span></div>'
@@ -353,7 +353,7 @@ window.onload=function(){
 				function(){return 0}
 			)
 			gene[gn].C
-			  .width(500)
+			  .width(400)
 			  .height(100)
 			  .margins({top: 10, right: 50, bottom: 30, left: 40})
 			  .dimension(gene[gn].D)
@@ -413,8 +413,8 @@ window.onload=function(){
 			var Xmax = xx.reduce(function(a,b){return Math.max(a,b)})
 			var Xn = xx.length
 			morph[p].C
-				.width(300)
-				.height(280)
+				.width(400)
+				.height(200)
 				//.x(d3.scale.linear())
 				//.xUnitCount(function(){return 10})
 				.xUnits(function(){return 50})
