@@ -315,10 +315,10 @@ window.onload=function(){
 			gene[gn].G=gene[gn].D.group().reduce(
 				// reduce in
 				function(p,v){
-					if(v[gn+'_mutations_code']===0){
+					if(v[gn]===0){
 						gene[gn].R.low+=1
 						return gene[gn].R.low
-					}else if(v[gn+'_mutations_code']===1){
+					}else if(v[gn]===1){
 						gene[gn].R.high+=1
 						return gene[gn].R.high
 					}else{
@@ -328,10 +328,10 @@ window.onload=function(){
 				},
 				// reduce out
 				function(p,v){
-					if(v[gn+'_mutations_code']===0){
+					if(v[gn]===0){
 						gene[gn].R.low-=1
 						return gene[gn].R.low
-					}else if(v[gn+'_mutations_code']===1){
+					}else if(v[gn]===1){
 						gene[gn].R.high-=1
 						return gene[gn].R.high
 					}else{
