@@ -146,7 +146,7 @@ window.onload=function(){
         
         if(searchParms.morph2){
         	morphParm2.value=searchParms.morph2
-        }else{morphParm2.value="energy"}
+        }else{morphParm2.value="compactness"}
         
         if(searchParms.morph3){
         	morphParm3.value=searchParms.morph3
