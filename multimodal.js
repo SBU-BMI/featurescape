@@ -16,9 +16,9 @@ window.onload=function(){
         // wrangle
         x = x.map(function(xi){
         	if(xi.days_to_death=='NotApplicable'){
-        		xi.status=0
-        	} else{
         		xi.status=1
+        	} else{
+        		xi.status=0
         	}
         	xi.months_followup=xi.days_to_last_followup/30
         	if(!xi.months_followup){
