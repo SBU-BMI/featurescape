@@ -150,7 +150,7 @@ window.onload=function(){
         
         if(searchParms.morph3){
         	morphParm3.value=searchParms.morph3
-        }else{morphParm2.value="age_at_initial_pathologic_diagnosis"}
+        }else{morphParm3.value="age_at_initial_pathologic_diagnosis"}
         	morphParm1.onchange=morphParm2.onchange=morphParm3.onchange=function(){
         	location.search='?morph1='+morphParm1.value+'&morph2='+morphParm2.value+'&morph3='+morphParm3.value
         }
