@@ -70,7 +70,7 @@ window.onload=function(){
         			h+='<h4 style="color:navy" id="fig4_1_TP53">TP53</h4>'
         		h +='</td>'
         		h +='<td id="fig4_2" style="vertical-align:top">'
-        			h +='<h3 style="color:maroon">Morphology, Epi, etc</h3>'
+        			h +='<h3 style="color:maroon">Rad, Path, Epi, etc</h3>'
         			h +='<p style="color:maroon">'
         				h +='Var 1: <select id="morphParm1"></select><br>'
         				h +='Var 2: <select id="morphParm2"></select><br>'
@@ -171,7 +171,7 @@ window.onload=function(){
         		ny.push(trace0.y[i])
         	})
         	trace0.x=nx;trace0.y=ny
-        	
+        	var ind1=ind[1]
         	4
 
 
@@ -214,7 +214,9 @@ window.onload=function(){
         	trace0.y=surv0.yy
 
         	surv0.yy.forEach(function(yi,i){
-        		docs[surv0.ind[i]].KM=yi // recording Kaplan Meier in the original docs
+        		//docs[surv0.ind[i]].KM=yi // recording Kaplan Meier in the original docs
+        		ind1
+        		docs[ind1[i]].KM=yi
         	})
 
         	// now only for the selected patients
