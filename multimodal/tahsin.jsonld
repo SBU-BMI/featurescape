@@ -1,0 +1,25 @@
+{
+  "@context": {
+    "jonas": "http://sbu-bmi.github.io/featurescape/multimodal/jonas/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "tahsin": "http://sbu-bmi.github.io/featurescape/multimodal/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@graph": [
+    {
+      "@id": "tahsin:5703a0d8995a1f7b99664211",
+      "jonas:explain": "for patients still alive, days to last followup",
+      "tahsin:attribute_name": "days_to_last_followup",
+      "tahsin:attribute_type": "clinical",
+      "tahsin:data_modality": "clinical"
+    },
+    {
+      "@id": "tahsin:5703a0d8995a1f7b99664210",
+      "jonas:explain": "brc identifyier",
+      "tahsin:attribute_name": "patient_id",
+      "tahsin:attribute_type": "clinical",
+      "tahsin:data_modality": "clinical"
+    }
+  ]
+}
