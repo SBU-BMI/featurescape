@@ -98,7 +98,8 @@ window.onload=function(){
         var allParms=["_id","patient_id","days_to_last_followup","days_to_death","EGFR","KRAS","PTEN","STK11","TP53","CT_image_name","compactness","energy","run_length","run_length_of_wavelet","NumberOfPixels_25","PrincipalMoments0_25","PrincipalMoments1_25","Elongation_25","Perimeter_25","Roundness_25","EquivalentSphericalRadius_25","EquivalentSphericalPerimeter_25","EquivalentEllipsoidDiameter0_25","EquivalentEllipsoidDiameter1_25","Flatness_25","MeanR_25","MeanG_25","MeanB_25","StdR_25","StdG_25","StdB_25","NumberOfPixels_50","PrincipalMoments0_50","PrincipalMoments1_50","Elongation_50","Perimeter_50","Roundness_50","EquivalentSphericalRadius_50","EquivalentSphericalPerimeter_50","EquivalentEllipsoidDiameter0_50","EquivalentEllipsoidDiameter1_50","Flatness_50","MeanR_50","MeanG_50","MeanB_50","StdR_50","StdG_50","StdB_50","NumberOfPixels_75","PrincipalMoments0_75","PrincipalMoments1_75","Elongation_75","Perimeter_75","Roundness_75","EquivalentSphericalRadius_75","EquivalentSphericalPerimeter_75","EquivalentEllipsoidDiameter0_75","EquivalentEllipsoidDiameter1_75","Flatness_75","MeanR_75","MeanG_75","MeanB_75","StdR_75","StdG_75","StdB_75","bcr_patient_barcode","vital_status","karnofsky_performance_score","primary_therapy_outcome_success","person_neoplasm_cancer_status","days_to_birth","age_at_initial_pathologic_diagnosis","status","months_followup"]
 
 
-        var morphParms = ["NumberOfPixels_50", "PhysicalSize_50", "NumberOfPixelsOnBorder_50", "FeretDiameter_50", "PrincipalMoments0_50", "PrincipalMoments1_50", "Elongation_50", "Perimeter_50", "Roundness_50", "EquivalentSphericalRadius_50", "EquivalentSphericalPerimeter_50", "EquivalentEllipsoidDiameter0_50", "EquivalentEllipsoidDiameter1_50", "Flatness_50", "MeanR_50", "MeanG_50", "MeanB_50", "StdR_50", "StdG_50", "StdB_50","age_at_initial_pathologic_diagno","est_days_to_remission","K17_group","Stage","Tumor","gender_code","hist_code"]
+        //var morphParms = ["NumberOfPixels_50", "PhysicalSize_50", "NumberOfPixelsOnBorder_50", "FeretDiameter_50", "PrincipalMoments0_50", "PrincipalMoments1_50", "Elongation_50", "Perimeter_50", "Roundness_50", "EquivalentSphericalRadius_50", "EquivalentSphericalPerimeter_50", "EquivalentEllipsoidDiameter0_50", "EquivalentEllipsoidDiameter1_50", "Flatness_50", "MeanR_50", "MeanG_50", "MeanB_50", "StdR_50", "StdG_50", "StdB_50","age_at_initial_pathologic_diagno","est_days_to_remission","K17_group","Stage","Tumor","gender_code","hist_code"]
+        var morphParms=["compactness","energy","run_length","run_length_of_wavelet","NumberOfPixels_25","PrincipalMoments0_25","PrincipalMoments1_25","Elongation_25","Perimeter_25","Roundness_25","EquivalentSphericalRadius_25","EquivalentSphericalPerimeter_25","EquivalentEllipsoidDiameter0_25","EquivalentEllipsoidDiameter1_25","Flatness_25","MeanR_25","MeanG_25","MeanB_25","StdR_25","StdG_25","StdB_25","NumberOfPixels_50","PrincipalMoments0_50","PrincipalMoments1_50","Elongation_50","Perimeter_50","Roundness_50","EquivalentSphericalRadius_50","EquivalentSphericalPerimeter_50","EquivalentEllipsoidDiameter0_50","EquivalentEllipsoidDiameter1_50","Flatness_50","MeanR_50","MeanG_50","MeanB_50","StdR_50","StdG_50","StdB_50","NumberOfPixels_75","PrincipalMoments0_75","PrincipalMoments1_75","Elongation_75","Perimeter_75","Roundness_75","EquivalentSphericalRadius_75","EquivalentSphericalPerimeter_75","EquivalentEllipsoidDiameter0_75","EquivalentEllipsoidDiameter1_75","Flatness_75","MeanR_75","MeanG_75","MeanB_75","StdR_75","StdG_75","StdB_75","karnofsky_performance_score","primary_therapy_outcome_success","person_neoplasm_cancer_status","days_to_birth","age_at_initial_pathologic_diagnosis","months_followup"]
         morphParms.sort(function(a,b){
         	var val = (a.toUpperCase()>b.toUpperCase())
         	if(val){
@@ -254,12 +255,12 @@ window.onload=function(){
 				title: 'Blue - whole population; Orange - selected cohort',
 				showlegend: false,
 				xaxis:{
-					range:[0,250],
+					range:[0,100],
 					type:"linear",
 					title:"months followup"
 				},
 				yaxis:{
-					range:[0,1],
+					range:[0,1.1],
 					type:"linear",
 					title:"Survival (Kaplan Meier estimator)"
 				}

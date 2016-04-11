@@ -1,0 +1,380 @@
+[
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664210"),
+		"attribute_name" : "patient_id",
+		"data_modality" : "clinical",
+		"attribute_type" : "clinical"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664211"),
+		"attribute_name" : "days_to_last_followup",
+		"data_modality" : "clinical",
+		"attribute_type" : "clinical"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664212"),
+		"attribute_name" : "days_to_death",
+		"data_modality" : "clinical",
+		"attribute_type" : "clinical"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664213"),
+		"attribute_name" : "EGFR",
+		"data_modality" : "molecular",
+		"attribute_type" : "genomic"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664214"),
+		"attribute_name" : "KRAS",
+		"data_modality" : "molecular",
+		"attribute_type" : "genomic"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664215"),
+		"attribute_name" : "PTEN",
+		"data_modality" : "molecular",
+		"attribute_type" : "genomic"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664216"),
+		"attribute_name" : "STK11",
+		"data_modality" : "molecular",
+		"attribute_type" : "genomic"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664217"),
+		"attribute_name" : "TP53",
+		"data_modality" : "molecular",
+		"attribute_type" : "genomic"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664218"),
+		"attribute_name" : "CT_image_name",
+		"data_modality" : "radiology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664219"),
+		"attribute_name" : "compactness",
+		"data_modality" : "radiology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b9966421a"),
+		"attribute_name" : "energy",
+		"data_modality" : "radiology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b9966421b"),
+		"attribute_name" : "run_length_of_wavelet",
+		"data_modality" : "radiology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b9966421c"),
+		"attribute_name" : "NumberOfPixels_25",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b9966421d"),
+		"attribute_name" : "PrincipalMoments1_25",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b9966421e"),
+		"attribute_name" : "Elongation_25",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b9966421f"),
+		"attribute_name" : "Perimeter_25",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664220"),
+		"attribute_name" : "EquivalentEllipsoidDiameter0_25",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664221"),
+		"attribute_name" : "MeanR_25",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664222"),
+		"attribute_name" : "MeanG_25",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664223"),
+		"attribute_name" : "MeanB_25",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664224"),
+		"attribute_name" : "StdR_25",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664225"),
+		"attribute_name" : "StdG_25",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664226"),
+		"attribute_name" : "StdB_25",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664227"),
+		"attribute_name" : "NumberOfPixels_50",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664228"),
+		"attribute_name" : "PrincipalMoments0_50",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664229"),
+		"attribute_name" : "PrincipalMoments1_50",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b9966422a"),
+		"attribute_name" : "EquivalentEllipsoidDiameter0_50",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b9966422b"),
+		"attribute_name" : "EquivalentEllipsoidDiameter1_50",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b9966422c"),
+		"attribute_name" : "Elongation_50",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b9966422d"),
+		"attribute_name" : "Perimeter_50",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b9966422e"),
+		"attribute_name" : "Roundness_50",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b9966422f"),
+		"attribute_name" : "EquivalentSphericalRadius_50",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664230"),
+		"attribute_name" : "EquivalentSphericalPerimeter_50",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664231"),
+		"attribute_name" : "EquivalentSphericalRadius_25",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664232"),
+		"attribute_name" : "run_length",
+		"data_modality" : "radiology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664233"),
+		"attribute_name" : "PrincipalMoments0_25",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664234"),
+		"attribute_name" : "EquivalentSphericalPerimeter_25",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664235"),
+		"attribute_name" : "Flatness_25",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664236"),
+		"attribute_name" : "EquivalentEllipsoidDiameter1_25",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664237"),
+		"attribute_name" : "Roundness_25",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664238"),
+		"attribute_name" : "MeanG_50",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664239"),
+		"attribute_name" : "StdR_50",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b9966423a"),
+		"attribute_name" : "StdG_50",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b9966423b"),
+		"attribute_name" : "MeanB_50",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b9966423c"),
+		"attribute_name" : "StdB_50",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b9966423d"),
+		"attribute_name" : "NumberOfPixels_75",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b9966423e"),
+		"attribute_name" : "PrincipalMoments0_75",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b9966423f"),
+		"attribute_name" : "Flatness_50",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664240"),
+		"attribute_name" : "PrincipalMoments1_75",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664241"),
+		"attribute_name" : "Elongation_75",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664242"),
+		"attribute_name" : "Perimeter_75",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664243"),
+		"attribute_name" : "Roundness_75",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664244"),
+		"attribute_name" : "EquivalentSphericalRadius_75",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664245"),
+		"attribute_name" : "MeanR_50",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664246"),
+		"attribute_name" : "EquivalentEllipsoidDiameter0_75",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664247"),
+		"attribute_name" : "EquivalentSphericalPerimeter_75",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664248"),
+		"attribute_name" : "EquivalentEllipsoidDiameter1_75",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b99664249"),
+		"attribute_name" : "Flatness_75",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b9966424a"),
+		"attribute_name" : "MeanR_75",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b9966424b"),
+		"attribute_name" : "MeanG_75",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b9966424c"),
+		"attribute_name" : "MeanB_75",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b9966424d"),
+		"attribute_name" : "StdR_75",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	},
+	{
+		"_id" : ObjectId("5703a0d8995a1f7b9966424e"),
+		"attribute_name" : "StdG_75",
+		"data_modality" : "pathology",
+		"attribute_type" : "morphology"
+	}
+]
