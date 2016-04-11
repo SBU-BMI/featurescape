@@ -444,8 +444,8 @@ window.onload=function(){
     	dcSurv.C
     	 .width(500)
 		 .height(300)
-		 .x(d3.scale.linear().domain([0,250])) //.domain([0, 20])
-		 .y(d3.scale.linear().domain([0,1]))
+		 .x(d3.scale.linear().domain([0,100])) //.domain([0, 20])
+		 .y(d3.scale.linear().domain([0,1.1]))
 		 //.yAxisLabel("Survial (KM estimator)")
 		 //.xAxisLabel("months followup")
 		 //.symbolSize(8)
@@ -465,7 +465,7 @@ window.onload=function(){
     	dcStatus.C
     	 .width(500)
 		 .height(100)
-		 .x(d3.scale.linear().domain([0,250])) //.domain([0, 20])
+		 .x(d3.scale.linear().domain([0,100])) //.domain([0, 20])
 		 .y(d3.scale.linear().domain([-1,2]))
 		 //.yAxisLabel("Survial (KM estimator)")
 		 //.xAxisLabel("months followup")
