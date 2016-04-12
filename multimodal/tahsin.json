@@ -1,0 +1,14 @@
+[
+	{
+		"_id" : "5703a0d8995a1f7b99664210",
+		"attribute_name" : "patient_id",
+		"data_modality" : "clinical",
+		"attribute_type" : "clinical"
+	},
+	{
+		"_id" : "5703a0d8995a1f7b99664211",
+		"attribute_name" : "days_to_last_followup",
+		"data_modality" : "clinical",
+		"attribute_type" : "clinical"
+	}
+]
