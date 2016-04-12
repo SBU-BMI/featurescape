@@ -1,0 +1,10 @@
+[
+	{
+		"_id" : "5703a0d8995a1f7b99664210",
+		"explain" : "for patients still alive, days to last followup",
+	},
+	{
+		"_id" : "5703a0d8995a1f7b99664211",
+		"explain" : "brc identifyier"
+	}
+]
