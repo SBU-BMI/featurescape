@@ -1,5 +1,5 @@
-@prefix tahsin: <http://sbu-bmi.github.io/featurescape/multimodal/tahsin.json> .
-@prefix jonas: <http://sbu-bmi.github.io/featurescape/multimodal/jonas/jonas.json> .
+@prefix tahsin: <http://sbu-bmi.github.io/featurescape/multimodal/tahsin.json?_id=> .
+@prefix jonas: <http://sbu-bmi.github.io/featurescape/multimodal/jonas/jonas.json?_id=> .
 
 tahsin:5703a0d8995a1f7b99664210 tahsin:attribute_name "patient_id" .
 tahsin:5703a0d8995a1f7b99664210 tahsin:data_modality "clinical" .
