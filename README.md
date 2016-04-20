@@ -5,7 +5,7 @@ Generic Live application at https://sbu-bmi.github.io/featurescape, for demo app
 
 **Two quick links to save on reading**:
 
-**1) u24preview**: feasability verification live at http://sbu-bmi.github.io/featurescape/u24Preview.html
+**1) u24preview**: feasibility verification live at http://sbu-bmi.github.io/featurescape/u24Preview.html
 
 **2) Fig4**: live at https://sbu-bmi.github.io/featurescape/fig4.html. 
 
