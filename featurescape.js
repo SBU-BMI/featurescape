@@ -713,7 +713,7 @@ fscape.scatterPlot = function (div0, i, j) {
             h += '<p style="color:blue">' + fi + ': ' + xmin + ' , ' + xmax + '</p>';
             h += '<p style="color:blue">' + fj + ': ' + ymin + ' , ' + ymax + '</p>';
             resampleMsg.innerHTML = h;
-            var urlTammy = "http://" + config.domain + "/NucleiMugshot/#caseid=" + location.search.match('TCGA-[^%]+')[0] + "&fx=" + fi + '&xmin=' + xmin + '&xmax=' + xmax + "&fy=" + fj + '&ymin=' + ymin + '&ymax=' + ymax + '&url=' + location.search.match(config.findAPI + '[^\;]+')[0];
+            var urlTammy = "http://" + config.domain + "/nuclei-mugshots/#caseid=" + location.search.match('TCGA-[^%]+')[0] + "&fx=" + fi + '&xmin=' + xmin + '&xmax=' + xmax + "&fy=" + fj + '&ymin=' + ymin + '&ymax=' + ymax + '&url=' + location.search.match(config.findAPI + '[^\;]+')[0];
             window.open(urlTammy);
 
         }
