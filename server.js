@@ -90,7 +90,7 @@ function handleRequest(request, response) {
             console.log('parms.mongoUrl: ' + parms.mongoUrl);
             console.log('parms.collection: ' + parms.collection);
             console.log('parms.find: ' + util.inspect(parms.find));
-            console.log('parms.find: ' + util.inspect(parms.project));
+            console.log('parms.project: ' + util.inspect(parms.project));
             console.log('parms.limit: ' + parms.limit);
             setTimeout(function () { // count down to quitting
                 response.end('{error: "this is taking too long, please email jonas.almeida@stonybrook.edu to find out what is the holdup :-("}')
