@@ -89,8 +89,10 @@ function handleRequest(request, response) {
             console.log('connecting ...');
             console.log('parms.mongoUrl: ' + parms.mongoUrl);
             console.log('parms.collection: ' + parms.collection);
-            console.log('parms.find: ' + util.inspect(parms.find));
-            console.log('parms.project: ' + util.inspect(parms.project));
+            var str = JSON.stringify(parms.find);
+            console.log('parms.find: ' + str);
+            str = JSON.stringify(parms.project);
+            console.log('parms.project: ' + str);
             console.log('parms.limit: ' + parms.limit);
             setTimeout(function () { // count down to quitting
                 response.end('{error: "this is taking too long, please email jonas.almeida@stonybrook.edu to find out what is the holdup :-("}')
@@ -129,6 +131,5 @@ function handleRequest(request, response) {
 
 var server = http.createServer(handleRequest);
 server.listen(port, function () {
-    //console.log('listening on port ' + port);
-    console.log('http://localhost:' + port);
+    console.log('listening on port ' + port);
 });
