@@ -4,14 +4,15 @@
 
 featureCube=function(){
   
-  this.hello=function(){
-    console.log('hello')
+  this.hello=function(){ // (new featureCube).hello() is the same as featureCube.hello()
+    featureCube.hello()
   }
 
-  this.info={
+  this.log={ // log book entry
     created:new Date,
-    log:[]
+    this:this
   }
+  featureCube.logBook.push(this.log) // filing entry
 
   this.slice=function(){
 
@@ -60,11 +61,13 @@ featureCube.hello=function(){ // say hello in the DOM
 featureCube.loadScript=function(url,cb,er){ // load script / JSON
 	var s = document.createElement('script');
 	s.src=url;
-	s.id = this.uid();
+	//s.id = this.uid();
 	if(!!cb){s.onload=cb}
 	if(!!er){s.onerror=er}
 	document.body.appendChild(s);
-	setTimeout('document.body.removeChild(document.getElementById("'+s.id+'"));',30000); // is the waiting still needed ?
+	setTimeout(function(){
+		document.body.removeChild(s); // is the waiting still needed ?
+	},5000)
 	return s.id
 };
 
@@ -75,6 +78,9 @@ featureCube.loadScripts=function(urls,cb,er){ // loading multiple scripts sequen
 };
 
 featureCube.fire=function(fun){ // run a function that needs the firebase connection
+  if(typeof(fun)=='undefined'){
+  	fun=function(){console.log(this)}
+  }
   if(typeof(firebase)=='undefined'){
   	featureCube.loadScript('https://www.gstatic.com/firebasejs/live/3.0/firebase.js',function(){
   		var config = {
@@ -83,13 +89,19 @@ featureCube.fire=function(fun){ // run a function that needs the firebase connec
 			databaseURL: "https://stone-ground-104117.firebaseio.com",
 			storageBucket: "stone-ground-104117.appspot.com",
 	  	};
-	  	firebase.initializeApp(config);
+	  	// based on https://github.com/firebase/FirebaseUI-Web
+	  	featureCube.firebase={app:firebase.initializeApp(config)};
+	  	featureCube.firebase.auth=featureCube.firebase.app.auth();
+	  	//featureCube.firebase.ui = new firebase.auth.AuthUI(featureCube.firebase.auth);
+	  	
 	  	fun()
   	})
   }else{
   	fun()
   }
 };
+
+featureCube.logBook=[]; // log book of all cubes 
 
 
 
