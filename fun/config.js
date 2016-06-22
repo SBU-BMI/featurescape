@@ -9,7 +9,7 @@ var config = {
     findAPI: 'https://falcon.bmi.stonybrook.edu',
     //port: 3000,
     port: 4500,
-    quipUrl: 'http://quip.bmi.stonybrook.edu/camicroscope_latest/osdCamicroscope.php',
+    quipUrl: 'http://quip1.uhmc.sunysb.edu/camicroscope/osdCamicroscope.php',
     reserve4Url: 'http://reserve4.informatics.stonybrook.edu/dev1/osdCamicroscope.php',
     analysis_execution_id: 'lung-features-v4',
     imgcoll: 'quip_images',
