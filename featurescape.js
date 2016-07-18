@@ -372,6 +372,7 @@ fscape.plot = function (x) { // when ready to do it
         $('td', featurecrossTB).mouseover(tdover);
         //featuremapTD.innerHTML='<span style="color:blue">(click on symbols for densities)</span>'
         featuremoreTD.innerHTML = '<span style="color:blue"></span>';
+        featuremoreTD.style.width=featurecrossTB.offsetWidth
         featuremapTD.innerHTML = '<span style="color:blue">(click on symbols for densities)</span>';
         setTimeout(function () {
             //featureNet.innerHTML='featureNet :-)'
@@ -379,7 +380,7 @@ fscape.plot = function (x) { // when ready to do it
                 //var sz = Math.round(window.innerWidth);
                 //var width = 960, height = 500;
                 //var width = sz*0.6, height = sz*0.5;
-                var width = featurecomputeDIV.offsetWidth, height= featurecomputeDIV.offsetWidth*0.5
+                var width = featurecrossTB.offsetWidth, height= featurecrossTB.offsetWidth*0.5
                 var color = d3.scale.category20();
                 var force = d3.layout.force()
                     .charge(-120)
@@ -517,7 +518,8 @@ fscape.plot = function (x) { // when ready to do it
             );
             doNet(1 - 0.5);
             */
-            d3.select('#featureNetSlider').call(
+            d3.select('#featureNetSlider')
+             .call(
                 d3.slider()
                  .axis(true)
                  .min(0)
@@ -528,8 +530,7 @@ fscape.plot = function (x) { // when ready to do it
                     //console.log(value)
                     doNet(1 - value)
                  })
-                 
-            )
+            ).style('width',featurecrossTB.offsetWidth+'px')
             doNet(0.5)
 
         }, 1000)
