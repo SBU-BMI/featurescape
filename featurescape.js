@@ -252,7 +252,7 @@ fscape.clust2html = function (cl) {
         });
         h += '</tr>'
     });
-    h += '</table><p id="featuremoreTD" style="color:blue">(click on symbols for densities)</p>&nbsp;<div id="featureNetSlider"></div><div id="featureNet">Similar neighbor network</div>';
+    h += '</table><p id="featuremoreTD" style="color:blue">(click on symbols for densities)</p>&nbsp;<div id="featureNet">Similar neighbor network</div><div id="featureNetSlider"></div>';
     return h
 };
 
@@ -376,9 +376,10 @@ fscape.plot = function (x) { // when ready to do it
         setTimeout(function () {
             //featureNet.innerHTML='featureNet :-)'
             var doNet = function (cut) {
-                var sz = Math.round(window.innerWidth * 0.5);
+                //var sz = Math.round(window.innerWidth);
                 //var width = 960, height = 500;
-                var width = sz, height = sz;
+                //var width = sz*0.6, height = sz*0.5;
+                var width = featurecomputeDIV.offsetWidth, height= featurecomputeDIV.offsetWidth*0.5
                 var color = d3.scale.category20();
                 var force = d3.layout.force()
                     .charge(-120)
@@ -496,15 +497,17 @@ fscape.plot = function (x) { // when ready to do it
             };
             // threshold slider
 
+            /*
             d3.select('#featureNetSlider').call(
                 d3.slider()
-                    .scale(d3.scale.linear()
-                        .domain([0, 1])
+                    .scale(
+                        (d3.scale.linear()
+                        .domain([0, 1]))
                     )
                     .axis(
                         d3.svg.axis()
                             .orient("top")
-                            .ticks(8)
+                            .ticks(10)
                     )
                     .value(0.5)
                     .on("slide", function (evt, value) {
@@ -513,9 +516,21 @@ fscape.plot = function (x) { // when ready to do it
                     })
             );
             doNet(1 - 0.5);
-
-
-            4
+            */
+            d3.select('#featureNetSlider').call(
+                d3.slider()
+                 .axis(true)
+                 .min(0)
+                 .max(1)
+                 .step(0.01)
+                 .value(0.5)
+                 .on("slide", function (evt, value) {
+                    //console.log(value)
+                    doNet(1 - value)
+                 })
+                 
+            )
+            doNet(0.5)
 
         }, 1000)
 
