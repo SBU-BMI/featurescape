@@ -381,6 +381,7 @@ fscape.plot = function (x) { // when ready to do it
                 //var width = 960, height = 500;
                 //var width = sz*0.6, height = sz*0.5;
                 var width = featurecrossTB.offsetWidth, height= featurecrossTB.offsetWidth*0.5
+                height=Math.max(height,500);
                 var color = d3.scale.category20();
                 var force = d3.layout.force()
                     .charge(-120)
