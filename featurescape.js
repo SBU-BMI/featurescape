@@ -340,11 +340,14 @@ fscape.plot = function (x) { // when ready to do it
                         var txtC = this.parentElement.parentElement.children[tri].children[tdj];
                         if (txtC.textContent.length == 1) {
                             txtC.textContent = 'O'
+                            txtC.style.border=''
+                            txtC.align="center"
                         }
                     }
                 }
 
                 this.textContent = "X";
+                this.style.border='solid'
                 setTimeout(function () {
                     fscape.scatterPlot("featuremapTD", i, j);
                     //fscape.featuremap(i,j) // not a mistake, the axis need to be switched to fulfll right hand rule
