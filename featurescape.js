@@ -706,6 +706,8 @@ fscape.scatterPlot = function (div0, i, j) {
     //console.log(fscape.plt._result._fullLayout.xaxis._tmin, fscape.plt._result._fullLayout.xaxis._tmax, fscape.plt._result._fullLayout.yaxis._tmin, fscape.plt._result._fullLayout.yaxis._tmax);
     console.log(div._fullLayout.xaxis._tmin, div._fullLayout.xaxis._tmax, div._fullLayout.yaxis._tmin, div._fullLayout.yaxis._tmax);
 
+                /*
+            // Nuclear Mugshots standalone is deprecated.  If you want to use mugshots, the new one is located in FeatureScapeApps.
     if (location.search.match(config.findAPI)) {
         var divZ = document.createElement('div');
         var bt = divZ.innerHTML = '<p><button id="resampleBt" style="color:red">Resample from selected region (under development)</button></p><p id="resampleMsg"></p>';
@@ -715,13 +717,6 @@ fscape.scatterPlot = function (div0, i, j) {
                 return Math.round(x * 10000000000) / 10000000000
             };
 
-            /*
-             // Error: fscape.plt._result = undefined.
-             var xmin = fscape.plt._result._fullLayout.xaxis._tmin;
-             var xmax = fscape.plt._result._fullLayout.xaxis._tmax;
-             var ymin = fscape.plt._result._fullLayout.yaxis._tmin;
-             var ymax = fscape.plt._result._fullLayout.yaxis._tmax;
-             */
 
             // Plotly will attach the plot information to the div that you specify.
             var xmin = div._fullLayout.xaxis._tmin;
@@ -729,16 +724,19 @@ fscape.scatterPlot = function (div0, i, j) {
             var ymin = div._fullLayout.yaxis._tmin;
             var ymax = div._fullLayout.yaxis._tmax;
 
+
             var h = '<h3 style="color:maroon">resampling (under development)</h3>';
             h += '<p style="color:blue">' + fi + ': ' + xmin + ' , ' + xmax + '</p>';
             h += '<p style="color:blue">' + fj + ': ' + ymin + ' , ' + ymax + '</p>';
             resampleMsg.innerHTML = h;
+            
             var urlTammy = config.domain + "/nuclei-mugshots/#caseid=" + location.search.match('TCGA-[^%]+')[0] + "&fx=" + fi + '&xmin=' + xmin + '&xmax=' + xmax + "&fy=" + fj + '&ymin=' + ymin + '&ymax=' + ymax + '&url=' + location.search.match(config.findAPI + '[^\;]+')[0];
             window.open(urlTammy);
+            
 
         }
     }
-
+*/
 };
 
 
