@@ -235,7 +235,25 @@ fscape.clust2html = function (cl) {
             return Math.round(cij * 255)
         })
     });
-    var h = '<h4 style="color:maroon">Cross-tabulated feature correlations</h4><table id="featurecrossTB">';
+    var h = '<h4 style="color:maroon">Cross-tabulated feature correlations</h4>'
+    h +='<table id="featurecrossTB">';
+    //header
+    h += '<thead>'
+        h +='<tr style="height:100px;vertical-align:bottom">'
+            h +='<td style="color:navy">Variable</td>'
+            ind.forEach(function(i,j){
+                h +='<td><span><div class="textColVertical" style="width:12px;transform:rotate(-90deg);font-size:12px">'+fscape.dt.parmNum[i]+'</div></span></td>'
+                4
+            })
+        h +='</tr>'
+    h += '</thead>'
+    //class="textColVertical"
+    //style = document.createElement("style");
+    //style.appendChild(document.createTextNode("")) // WebKit hack :(
+    //document.head.appendChild(style);
+    //style.insertRule("textColVertical {color:red}", 1);
+    // body
+    h += '<tbody>'
     ind.forEach(function (i, j) {
         h += '<tr><td>' + fscape.dt.parmNum[i] + '</td>';
         T.forEach(function (c, k) {
@@ -252,6 +270,7 @@ fscape.clust2html = function (cl) {
         });
         h += '</tr>'
     });
+    h += '</tbody>'
     h += '</table><p id="featuremoreTD" style="color:blue">(click on symbols for densities)</p>&nbsp;<div id="featureNet">Similar neighbor network</div><div id="featureNetSlider"></div>';
     return h
 };
@@ -321,6 +340,10 @@ fscape.plot = function (x) { // when ready to do it
     fscape.dt.cl = cl; // this may be better kept as a structure
     fscape.dt.parmNum = parmNum;
     featurecrossTD.innerHTML = fscape.clust2html(cl);
+    // styling column names
+    //$('.textColVertical').css('transform','rotate(-90deg)')
+    //$('.textColVertical').css('transform-origin','left bottom 0')
+    //$('.textColVertical').css('font-size','12px')
 
     // featuremapTD
     featuremapTD.innerHTML = 'processing ...';
@@ -368,11 +391,21 @@ fscape.plot = function (x) { // when ready to do it
                 //featuremoreTD.innerHTML='<hr><p style="background-color:'+this.style.color+';color:rgb('+cBack+')">Pearson correlation between <br>'+fi+' <br>'+fj+'<br> = '+Math.round((1-fscape.dt.cl[1][j][i])*100)/100+'</p>'
                 featuremoreTD.innerHTML = '<hr><p style="background-color:' + this.style.color + ';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p style="color:navy">Pearson correlation between <li style="color:navy">' + fi + ' </li><li style="color:navy">' + fj + '</li> |corr(' + ii + ',' + jj + ')|= ' + jmat.toPrecision(1 - fscape.dt.cl[1][ii][jj]) + '</p><p style="background-color:' + this.style.color + ';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>';
                 $(this).tooltip()[0].title = '< ' + fi + ' , ' + fj + ' >';
-                4
+                this.parentElement.children[0].style.backgroundColor="yellow"
+                this.parentElement.parentElement.parentElement.tHead.children[0].children[ii+1].style.backgroundColor="yellow"
             }
         };
+        var tdleave = function(){
+            this.parentElement.children[0].style.backgroundColor=""
+            var jj = parseInt(this.id.split(',')[1])
+            var ind=fscape.dt.cl[0]
+            var j = ind.indexOf(jj)
+            this.parentElement.parentElement.parentElement.tHead.children[0].children[j+1].style.backgroundColor=""
+        }
+
         $('td', featurecrossTB).click(tdfun);
         $('td', featurecrossTB).mouseover(tdover);
+        $('td', featurecrossTB).mouseleave(tdleave);
         //featuremapTD.innerHTML='<span style="color:blue">(click on symbols for densities)</span>'
         featuremoreTD.innerHTML = '<span style="color:blue"></span>';
         featuremoreTD.style.width=featurecrossTB.offsetWidth
@@ -656,6 +689,7 @@ fscape.featuremap = function (i, j) {
             return 255 - c
         }).toString();
         featuremoreTD.innerHTML = '<hr><p style="background-color:' + c + ';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p style="color:navy">Pearson correlation between <li style="color:navy">' + fi + ' </li><li style="color:navy">' + fj + '</li> corr(' + ii + ',' + jj + ')= ' + Math.round((1 - fscape.dt.cl[1][ii][jj]) * 1000) / 1000 + '</p><p style="background-color:' + c + ';font-size:3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>'
+        
     };
 
 
