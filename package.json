@@ -1,0 +1,30 @@
+{
+  "name": "findmongo",
+  "version": "1.0.0",
+  "description": "find API for mongo deployments",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://jonasalmeida@github.com/mathbiol/findMongo.git"
+  },
+  "keywords": [
+    "mongo",
+    "find",
+    "API"
+  ],
+  "author": "Jonas Almeida <jalmeida@mathbiol.org> (http://jonasalmeida.info)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mathbiol/findMongo/issues"
+  },
+  "homepage": "https://github.com/mathbiol/findMongo#readme",
+  "dependencies": {
+    "mongodb": "^2.2.21",
+    "url": "^0.11.0",
+    "util": "^0.10.3"
+  }
+}

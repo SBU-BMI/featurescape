@@ -3,11 +3,11 @@ var mongoClient = require('mongodb').MongoClient;
 var http = require("http");
 var url = require("url");
 var util = require("util");
-var port = 3000;
+var port = process.env.PORT || 3000;
 
-var mongoUrl = 'mongodb://<uname>:<passwd>@<domain>:<port>/<db>'; 
+var mongoUrl = 'mongodb://<uname>:<passwd>@<domain>:<port>/<db>'; // <-- your connection string goes here
 if(mongoUrl=='mongodb://<uname>:<passwd>@<domain>:<port>/<db>'){ // if no url provided
-    mongoUrl = 'mongodb://127.0.0.1:27017/test'; // <-- default mongo
+    mongoUrl = process.env.mongoUrl||'mongodb://127.0.0.1:27017/test'; // <-- env or default mongo, whichever comes first
 }
 var collection = '<collection name>'; // <-- default collection
 if(collection=='<collection name>'){
@@ -63,6 +63,7 @@ function handleRequest(request, response) {
                 console.log(err);
             }
         }
+
 
         if (!parms.project) { // project
             parms.project = {};
