@@ -265,7 +265,7 @@ fscape.clust2html = function (cl) {
             v = Math.min(v, 50);
             v = Math.max(v, 0);
             var cm = 'rgb(' + cmap[v].toString() + ')';
-            h += '<td id="' + i + ',' + ind[k] + '" style="color:' + cm + ';font-size:' + (14 - 4 * c[j]) + '">O</td>';
+            h += '<td id="' + i + ',' + ind[k] + '" style="color:' + cm + ';font-size:' + (14 - 4 * c[j]) + ';background-color:'+cm+'">O</td>';
             //h+='<td style="color:rgb(255,">X</td>'
         });
         h += '</tr>'
@@ -359,16 +359,17 @@ fscape.plot = function (x) { // when ready to do it
                 }
                 // place an X on selected td, after clearing it all to "O"
                 for (var tri = 0; tri < this.parentElement.parentElement.children.length; tri++) {
-                    for (var tdj = 0; tdj < this.parentElement.parentElement.children[tri].children.length; tdj++) {
+                    for (var tdj = 1; tdj < this.parentElement.parentElement.children[tri].children.length; tdj++) {
                         var txtC = this.parentElement.parentElement.children[tri].children[tdj];
                         if (txtC.textContent.length == 1) {
                             txtC.textContent = 'O'
                             txtC.style.border=''
                             txtC.align="center"
+                            txtC.style.color=txtC.style.backgroundColor
                         }
                     }
                 }
-
+                this.style.color = 'rgb('+this.style.backgroundColor.match(/[0123456789]+/g).map(function(x){return 255-parseInt(x)}).join(',')+')'
                 this.textContent = "X";
                 this.style.border='solid'
                 setTimeout(function () {

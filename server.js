@@ -3,10 +3,16 @@ var mongoClient = require('mongodb').MongoClient;
 var http = require("http");
 var url = require("url");
 var util = require("util");
-var port = 3000;
+var port = process.env.PORT || 3000;
 
-var mongoUrl = 'mongodb://<uname>:<passwd>@<domain>:<port>/<db>'; // <-- default mongo
+var mongoUrl = 'mongodb://<uname>:<passwd>@<domain>:<port>/<db>'; // <-- your connection string goes here
+if(mongoUrl=='mongodb://<uname>:<passwd>@<domain>:<port>/<db>'){ // if no url provided
+    mongoUrl = process.env.mongoUrl||'mongodb://127.0.0.1:27017/test'; // <-- env or default mongo, whichever comes first
+}
 var collection = '<collection name>'; // <-- default collection
+if(collection=='<collection name>'){
+    var collection = 'test';
+}
 
 function handleRequest(request, response) {
     if (request.url != '/favicon.ico') {
@@ -26,18 +32,10 @@ function handleRequest(request, response) {
         }
         // default parameter values
         var max = 10000; // maximum number of records at a time
-        var med = 0; // default number of records at a time
+        var med = 1000; // default number of records at a time
         if (!parms.limit) {
             parms.limit = med;
-            response.end("");
-            console.log("Request with no limit parameter!");
-            return;
-        }
-
-        if (parms.limit == 0) {
-            response.end("");
-            console.log("Request with limit==0!");
-            return;
+            console.log("Request with no limit parameter, limit set to "+parms.limit);
         }
 
         if (parms.limit > max) {
@@ -66,6 +64,7 @@ function handleRequest(request, response) {
             }
         }
 
+
         if (!parms.project) { // project
             parms.project = {};
         } else {
@@ -89,6 +88,11 @@ function handleRequest(request, response) {
             console.log('connecting ...');
             console.log('parms.mongoUrl: ' + parms.mongoUrl);
             console.log('parms.collection: ' + parms.collection);
+            if(parms.offset){
+                parms.offset=parms.offset.slice(3,-3); // ObjectId passed as a "string"
+                console.log('parms.offset: ' + parms.offset);
+                parms.find._id={"$gt":parms.offset};
+            }
             var str = JSON.stringify(parms.find);
             console.log('parms.find: ' + str);
             str = JSON.stringify(parms.project);
